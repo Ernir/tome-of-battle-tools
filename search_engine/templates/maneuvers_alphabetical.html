@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load search_extras %}
+
+{% block content %}
+    <h2>All maneuvers in alphabetical order</h2>
+    {% for man_chunk in maneuver_chunks %}
+        <div class="col-md-4">
+        {% for letter in alphabet %}
+            {% if man_chunk|keyvalue:letter %}
+                <h3>'{{ letter }}' Maneuvers</h3>
+                <ul>
+                {% for maneuver in man_chunk|keyvalue:letter %}
+                    <li>
+                        <a href="/maneuvers/{{ maneuver.slug }}/">{{ maneuver.name }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>All Maneuvers by Discipline</h2>
+    {% for discipline in disciplines %}
+        <h3 id="{{ discipline.slug }}">{{ discipline.name }}</h3>
+        <ul>
+            {% for maneuver in discipline.maneuvers.all %}
+                {% if not maneuver.has_errata_elsewhere %}
+                <li>
+                    <a href="/maneuvers/{{ maneuver.slug }}/">{{ maneuver.name }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

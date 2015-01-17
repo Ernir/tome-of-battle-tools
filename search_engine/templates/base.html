@@ -1,0 +1,39 @@
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- minified bootstrap -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"/>
+
+    <link rel="stylesheet" href="{% static "style.css" %}"/>
+
+    <title>The Tome of Battle Search Engine</title>
+</head>
+<body>
+
+<div id="content" class="container">
+    {% include "navbar.html" %}
+    {% block content %}
+        This should be overridden.
+    {% endblock %}
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="text-muted">Eiríkur Ernir Þorsteinsson, 2014</p>
+    </div>
+</div>
+
+<!-- minified jQuery -->
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<!-- minified bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

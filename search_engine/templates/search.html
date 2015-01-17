@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="col-md-6">
+        <h2>Search parameters</h2>
+
+        {% crispy form %}
+    </div>
+    <div class="col-md-6">
+        {% if number != 1 %}
+            <h2>{{ number }} Results</h2>
+        {% else %}
+            <h2>{{ number }} Result</h2>
+        {% endif %}
+        {% if maneuvers %}
+            <ul>
+                {% for maneuver in maneuvers %}
+                    <li>
+                        <a href="/maneuvers/{{ maneuver.slug }}/">{{ maneuver.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            Nothing was found. Try another search?
+        {% endif %}
+    </div>
+{% endblock %}

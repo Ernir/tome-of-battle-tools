@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="col-md-6">
+        <h2>{{ maneuver.name }} <small>p. {{ maneuver.page }}</small></h2>
+
+        <p>{{ maneuver.discipline }}
+            {% if maneuver.type %}
+                ({{ maneuver.type }})
+            {% endif %}
+            {% if maneuver.descriptor %}
+                {% for descriptor in descriptors %}
+                    [{{ descriptor }}]
+                {% endfor %}
+            {% endif %}
+        </p>
+
+        <div><strong>Level:</strong>
+            {% for initiator_class in initiator_classes %}
+                {{ initiator_class }} {{ maneuver.level }}
+                {% if not forloop.last %}
+                    ,
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if maneuver.requirements > 0 %}
+            <div>
+                <strong>Prerequisite:</strong> {{ maneuver.requirements }} {{ maneuver.discipline }}
+                maneuvers
+            </div>
+        {% endif %}
+
+        <div><strong>Initiation Action:</strong> {{ maneuver.action }}</div>
+
+        <div><strong>Range:</strong> {{ maneuver.range }}</div>
+
+        {% if maneuver.target %}
+            <div><strong>Target:</strong> {{ maneuver.target }}</div>
+        {% endif %}
+
+        {% if maneuver.area %}
+            <div><strong>Area:</strong> {{ maneuver.area }}</div>
+        {% endif %}
+
+        {% if maneuver.effect %}
+            <div><strong>Effect:</strong> {{ maneuver.effect }}</div>
+        {% endif %}
+
+        {% if maneuver.duration %}
+            <div><strong>Duration:</strong> {{ maneuver.duration }}</div>
+        {% endif %}
+
+        {% if maneuver.saving_throw %}
+            <div><strong>Saving throw:</strong> {{ maneuver.saving_throw }}
+            </div>
+        {% endif %}
+
+        <div>
+            {{ maneuver.html_description|safe }}
+        </div>
+{#        <p><strong>Page: {{ maneuver.page }}</strong></p>#}
+
+        {% if maneuver.alternate_version %}
+            This maneuver has been updated by errata. See
+            <a href="/maneuvers/{{ maneuver.alternate_version.slug }}/">{{ maneuver.alternate_version.name }}</a>
+            for details.
+        {% endif %}
+    </div>
+{% endblock %}
