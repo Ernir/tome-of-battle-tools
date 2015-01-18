@@ -59,8 +59,9 @@ def maneuvers_alphabetical(request):
     chunk_breaks = ["F", "Q", "Z"]
     chunks = []
 
+    mans = Maneuver.objects.filter(has_errata_elsewhere=False)
     for letter in alphabet:
-        mans_starting_with_letter = Maneuver.objects.filter(name__startswith=letter).all()
+        mans_starting_with_letter = mans.filter(name__startswith=letter).all()
         if len(mans_starting_with_letter) > 0:
             maneuver_bag[letter] = mans_starting_with_letter
         if letter in chunk_breaks:
@@ -75,3 +76,21 @@ def maneuvers_by_discipline(request):
     disciplines = Discipline.objects.all()
 
     return render(request, "maneuvers_by_discipline.html", {"disciplines": disciplines})
+
+
+def maneuvers_by_level(request):
+    levels = range(1, 10)
+    disciplines = Discipline.objects.all()
+
+    maneuvers = {}
+    for level in levels:
+        maneuvers_of_level = Maneuver.objects.filter(level=level, has_errata_elsewhere=False)
+        sublist = {}
+        for discipline in disciplines:
+            sublist[discipline] = maneuvers_of_level.filter(discipline=discipline).all()
+        maneuvers[level] = sublist
+
+    print(maneuvers)
+
+
+    return render(request, "maneuvers_by_level.html", {"maneuvers": maneuvers, "disciplines": disciplines})

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load search_extras %}
+
+{% block content %}
+    <h2>All Maneuvers by Level</h2>
+    {% for level in maneuvers %}
+        <h3>Maneuvers of level {{ level }}</h3>
+        {% for discipline in maneuvers|keyvalue:level %}
+            <h4>{{ discipline }}</h4>
+            <ul>
+                {% for maneuver in maneuvers|keyvalue:level|keyvalue:discipline %}
+                    <li>
+                        <a href="/maneuvers/{{ maneuver.slug }}/">{{ maneuver.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
