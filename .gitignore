@@ -1,9 +1,9 @@
 # Project-specific
 
-TomeOfBattle/settings.py
 db.sqlite3
 venv/
 .idea/
+staticfiles/
 
 
 # Byte-compiled / optimized / DLL files
