@@ -90,7 +90,4 @@ def maneuvers_by_level(request):
             sublist[discipline] = maneuvers_of_level.filter(discipline=discipline).all()
         maneuvers[level] = sublist
 
-    print(maneuvers)
-
-
     return render(request, "maneuvers_by_level.html", {"maneuvers": maneuvers, "disciplines": disciplines})
