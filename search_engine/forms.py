@@ -1,6 +1,6 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field
+from crispy_forms.layout import Layout, Submit, Field, Div
 from crispy_forms.bootstrap import FormActions
 
 
@@ -19,7 +19,7 @@ class SearchForm(forms.Form):
             ("8", "8"),
             ("9", "9"),
         ),
-        # widget = forms.CheckboxSelectMultiple,
+        widget = forms.CheckboxSelectMultiple,
         required=False,
         # help_text="Hold down ctrl to deselect or multi-select."
     )
@@ -36,7 +36,7 @@ class SearchForm(forms.Form):
             ("Devoted Spirit", "Devoted Spirit"),
             ("Desert Wind", "Desert Wind"),
         ),
-        # widget = forms.CheckboxSelectMultiple,
+        widget = forms.CheckboxSelectMultiple,
         required=False,
     )
 
@@ -49,19 +49,31 @@ class SearchForm(forms.Form):
             ("4", "4"),
             ("5", "5"),
         ),
-        # widget = forms.CheckboxSelectMultiple,
+        widget = forms.CheckboxSelectMultiple,
         required=False,
     )
 
     helper = FormHelper()
     # helper.form_class = "form-horizontal"
     helper.layout = Layout(
-        Field("maneuver_name", placeholder="Exact partial maneuver name."),
-        Field("level"),
-        Field("discipline"),
-        Field("requirements"),
-        FormActions(
-            Submit("search", "Search", css_class="btn btn-default"),
+        Div(
+            Field("maneuver_name", placeholder="Exact partial maneuver name."),
+            Div(
+                Div(
+                    Field("level"),
+                    css_class="col-md-4"
+                ),
+                Div(
+                    Field("discipline"),
+                    css_class="col-md-4"
+                ),
+                Div(
+                    Field("requirements"),
+                    css_class="col-md-4"
+                ),
+                css_class="row"
+            ),
+            FormActions(Submit("search", "Search", css_class="btn btn-default col-md-offset-4 col-md-4")),
         )
     )
     helper.form_action = "/"
