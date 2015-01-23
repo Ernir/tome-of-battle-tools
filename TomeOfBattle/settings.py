@@ -17,8 +17,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = os.environ.get("DEBUG_MODE")
+TEMPLATE_DEBUG = DEBUG
 
 # Application definition
 
