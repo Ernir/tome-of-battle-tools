@@ -17,6 +17,7 @@ def index(request):
     ml = ml.filter(has_errata_elsewhere=False)
 
     if incoming:
+        print(incoming)
         name = incoming["maneuver_name"]
         if len(name) > 0:
             ml = ml.filter(name__icontains=name)
@@ -29,6 +30,9 @@ def index(request):
 
         if "requirements" in incoming:
             ml = ml.filter(requirements__in=incoming.getlist("requirements"))
+
+        if "type" in incoming:
+            ml = ml.filter(type__name__in=incoming.getlist("type"))
 
     number = ml.count()
 

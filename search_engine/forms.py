@@ -26,15 +26,15 @@ class SearchForm(forms.Form):
 
     discipline = forms.MultipleChoiceField(
         choices=(
-            ("White Raven", "White Raven"),
-            ("Tiger Claw", "Tiger Claw"),
-            ("Stone Dragon", "Stone Dragon"),
-            ("Shadow Hand", "Shadow Hand"),
-            ("Setting Sun", "Setting Sun"),
-            ("Iron Heart", "Iron Heart"),
-            ("Diamond Mind", "Diamond Mind"),
-            ("Devoted Spirit", "Devoted Spirit"),
             ("Desert Wind", "Desert Wind"),
+            ("Devoted Spirit", "Devoted Spirit"),
+            ("Diamond Mind", "Diamond Mind"),
+            ("Iron Heart", "Iron Heart"),
+            ("Setting Sun", "Setting Sun"),
+            ("Shadow Hand", "Shadow Hand"),
+            ("Stone Dragon", "Stone Dragon"),
+            ("Tiger Claw", "Tiger Claw"),
+            ("White Raven", "White Raven"),
         ),
         widget = forms.CheckboxSelectMultiple,
         required=False,
@@ -53,6 +53,18 @@ class SearchForm(forms.Form):
         required=False,
     )
 
+    type = forms.MultipleChoiceField(
+        choices=(
+            ("Boost", "Boost"),
+            ("Counter", "Counter"),
+            ("Stance", "Stance"),
+            ("Strike", "Strike"),
+            ("Other", "Other")
+        ),
+        widget = forms.CheckboxSelectMultiple,
+        required=False,
+    )
+
     helper = FormHelper()
     # helper.form_class = "form-horizontal"
     helper.layout = Layout(
@@ -61,15 +73,21 @@ class SearchForm(forms.Form):
             Div(
                 Div(
                     Field("level"),
-                    css_class="col-md-4"
+                    css_class="col-md-6"
                 ),
                 Div(
                     Field("discipline"),
-                    css_class="col-md-4"
+                    css_class="col-md-6"
                 ),
+            ),
+            Div(
                 Div(
                     Field("requirements"),
-                    css_class="col-md-4"
+                    css_class="col-md-6"
+                ),
+                Div(
+                    Field("type"),
+                    css_class="col-md-6"
                 ),
                 css_class="row"
             ),

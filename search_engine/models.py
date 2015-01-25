@@ -94,7 +94,7 @@ class Maneuver(models.Model):
     name = models.CharField(max_length=200)
 
     discipline = models.ForeignKey(Discipline, related_name="maneuvers")
-    type = models.ForeignKey(ManeuverType, blank=True, null=True)
+    type = models.ForeignKey(ManeuverType, blank=True, null=True, related_name="maneuvers")
     descriptor = models.ManyToManyField(Descriptor, blank=True, null=True)
 
     level = models.IntegerField()
