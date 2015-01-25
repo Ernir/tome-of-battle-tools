@@ -17,7 +17,6 @@ def index(request):
     ml = ml.filter(has_errata_elsewhere=False)
 
     if incoming:
-        print(incoming)
         name = incoming["maneuver_name"]
         if len(name) > 0:
             ml = ml.filter(name__icontains=name)
