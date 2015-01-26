@@ -6,7 +6,9 @@
 
         <p>{{ maneuver.discipline }}
             {% if maneuver.type %}
-                ({{ maneuver.type }})
+                {% if maneuver.type.name != "Other" %}
+                    ({{ maneuver.type }})
+                {% endif %}
             {% endif %}
             {% if maneuver.descriptor %}
                 {% for descriptor in descriptors %}
