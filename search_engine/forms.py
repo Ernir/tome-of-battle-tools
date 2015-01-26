@@ -19,9 +19,8 @@ class SearchForm(forms.Form):
             ("8", "8"),
             ("9", "9"),
         ),
-        widget = forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple,
         required=False,
-        # help_text="Hold down ctrl to deselect or multi-select."
     )
 
     discipline = forms.MultipleChoiceField(
@@ -36,7 +35,7 @@ class SearchForm(forms.Form):
             ("Tiger Claw", "Tiger Claw"),
             ("White Raven", "White Raven"),
         ),
-        widget = forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple,
         required=False,
     )
 
@@ -49,7 +48,7 @@ class SearchForm(forms.Form):
             ("4", "4"),
             ("5", "5"),
         ),
-        widget = forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple,
         required=False,
     )
 
@@ -61,12 +60,11 @@ class SearchForm(forms.Form):
             ("Strike", "Strike"),
             ("Other", "Other")
         ),
-        widget = forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple,
         required=False,
     )
 
     helper = FormHelper()
-    # helper.form_class = "form-horizontal"
     helper.layout = Layout(
         Div(
             Field("maneuver_name", placeholder="Exact partial maneuver name."),
@@ -79,6 +77,7 @@ class SearchForm(forms.Form):
                     Field("discipline"),
                     css_class="col-md-6"
                 ),
+                css_class="row"
             ),
             Div(
                 Div(
@@ -91,7 +90,19 @@ class SearchForm(forms.Form):
                 ),
                 css_class="row"
             ),
-            FormActions(Submit("search", "Search", css_class="btn btn-default col-md-offset-4 col-md-4")),
+            Div(
+                FormActions(Submit(
+                    "search",
+                    "Search",
+                    css_class="btn btn-default col-md-offset-1 col-md-4"
+                )),
+                FormActions(Submit(
+                    "clear",
+                    "Clear",
+                    css_class="btn btn-warning col-md-offset-2 col-md-4"
+                )),
+                css_class="row"
+            )
         )
     )
     helper.form_action = "/"
