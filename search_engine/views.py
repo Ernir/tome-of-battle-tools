@@ -5,6 +5,10 @@ from search_engine.models import Maneuver, Discipline
 
 
 def index(request):
+    return render(request, "index.html")
+
+
+def search(request):
     """
 
     Defines the main search page.

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h2 id="about">The Unofficial Tome of Battle Tools Page</h2>
+
+        <p>
+            The collection of tools consists of the following applications:
+        <ul>
+            <li><a href="{% url "search_engine.views.search" %}">Maneuver search
+                engine</a></li>
+        </ul>
+        ... and that's it, currently.
+        </p>
+        <h2 id="links">Tome of Battle Links</h2>
+        <ul>
+            <li><a href="http://archive.wizards.com/default.asp?x=dnd/we/20061225a">All
+                Tome of Battle Maneuvers in card format</a></li>
+            <li><a href="http://brilliantgameologists.com/boards/index.php?topic=13292.0">The
+                Unofficial Tome of Battle Errata</a></li>
+            <li>
+                <a href="http://www.amazon.com/Tome-Battle-Dungeons-Dragons-Roleplaying/dp/0786939222">The
+                    Tome of Battle on Amazon.com</a> - buy it now!
+            </li>
+            <li><a href="http://rpg.stackexchange.com/questions/tagged/tome-of-battle">Tome of Battle on rpg.stackexchange.com.</a></li>
+        </ul>
+    </div>
+{% endblock %}

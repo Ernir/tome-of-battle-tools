@@ -105,4 +105,4 @@ class SearchForm(forms.Form):
             )
         )
     )
-    helper.form_action = "/"
+    helper.form_action = "/search/"

@@ -4,6 +4,7 @@ from search_engine import views
 urlpatterns = \
     patterns('',
              url(r"^$", views.index, name="index"),
+             url(r"^search/$", views.search, name="search"),
              url(r"maneuvers/(?P<man_slug>.+)/", views.maneuver, name="maneuver"),
              url(r"about/", views.about, name="about"),
              url(r"maneuvers-alphabetical/", views.maneuvers_alphabetical, name="maneuvers_alphabetical"),
