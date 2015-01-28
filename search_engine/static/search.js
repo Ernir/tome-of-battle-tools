@@ -79,11 +79,15 @@ function updateResults(jsonData) {
     var numResults = jsonData.length;
 
     // Handling the messages
-    if (numResults > 1) {
-        $("#results-found").text(numResults + " maneuvers found.");
-        showMessage("#results-found");
-    } else if (numResults === 0) {
+    if (numResults === 0) {
         showMessage("#results-none");
+    } else {
+        if (numResults > 1) {
+            $("#results-found").text(numResults + " maneuvers found.");
+        } else { // 1 result
+            $("#results-found").text(numResults + " maneuver found");
+        }
+        showMessage("#results-found");
     }
 
     // Writing out the lists

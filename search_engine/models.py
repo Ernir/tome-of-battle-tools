@@ -113,7 +113,7 @@ class Maneuver(models.Model):
 
     saving_throw = models.ForeignKey(SavingThrow, blank=True, null=True)
 
-    descriptive_text = models.TextField()
+    descriptive_text = models.TextField()  # Markdown-formatted maneuver main text
 
     slug = models.SlugField()
     html_description = models.TextField()
@@ -125,6 +125,7 @@ class Maneuver(models.Model):
     def save(self, *args, **kwargs):
 
         self.slug = slugify(self.name)
+        self.descriptive_text = self.descriptive_text.strip()
         self.html_description = markdown(self.descriptive_text, extensions=["tables"])
         self.html_description = self.html_description.replace("<table>", "<table class='table'>")
         super(Maneuver, self).save(*args, **kwargs)
