@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
 
 {% block content %}
     <div class="col-md-6">
@@ -8,21 +9,21 @@
         {% crispy form %}
     </div>
     <div class="col-md-6">
-        {% if number != 1 %}
-            <h2>{{ number }} Results</h2>
-        {% else %}
-            <h2>{{ number }} Result</h2>
-        {% endif %}
-        {% if maneuvers %}
-            <ul>
-                {% for maneuver in maneuvers %}
-                    <li>
-                        <a href="/maneuvers/{{ maneuver.slug }}/">{{ maneuver.name }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            Nothing was found. Try another search?
-        {% endif %}
+        <h2 id="results-title">Results</h2>
+
+        <p id="results-found" class="bg-success message">Maneuvers found.</p>
+
+        <p id="results-working" class="bg-info message">Querying...</p>
+
+        <p id="results-none" class="bg-info message">Nothing was found. Try another search?</p>
+
+        <p id="results-error" class="bg-danger message">Something went wrong with your request. Please check your internet connection and try again.</p>
+
+        <ul id="results-list">
+        </ul>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static "search.js" %}"></script>
 {% endblock %}

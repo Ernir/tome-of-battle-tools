@@ -65,6 +65,7 @@ class SearchForm(forms.Form):
     )
 
     helper = FormHelper()
+    helper.form_id = "main-form"
     helper.layout = Layout(
         Div(
             Field("maneuver_name", placeholder="Exact partial maneuver name."),
@@ -88,19 +89,6 @@ class SearchForm(forms.Form):
                     Field("type"),
                     css_class="col-md-6"
                 ),
-                css_class="row"
-            ),
-            Div(
-                FormActions(Submit(
-                    "search",
-                    "Search",
-                    css_class="btn btn-default col-md-offset-1 col-md-4"
-                )),
-                FormActions(Submit(
-                    "clear",
-                    "Clear",
-                    css_class="btn btn-warning col-md-offset-2 col-md-4"
-                )),
                 css_class="row"
             )
         )

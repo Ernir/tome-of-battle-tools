@@ -9,5 +9,7 @@ urlpatterns = \
              url(r"about/", views.about, name="about"),
              url(r"maneuvers-alphabetical/", views.maneuvers_alphabetical, name="maneuvers_alphabetical"),
              url(r"maneuvers-by-discipline/", views.maneuvers_by_discipline, name="maneuvers_by_discipline"),
-             url(r"maneuvers_by_level/", views.maneuvers_by_level, name="maneuvers_by_level")
+             url(r"maneuvers_by_level/", views.maneuvers_by_level, name="maneuvers_by_level"),
+
+             url(r"^api/search/$", views.perform_search, name="perform_search"),
     )

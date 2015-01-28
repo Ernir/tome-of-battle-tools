@@ -1,4 +1,5 @@
 import string
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from search_engine.forms import SearchForm
 from search_engine.models import Maneuver, Discipline
@@ -10,47 +11,49 @@ def index(request):
 
 def search(request):
     """
-
-    Defines the main search page.
-    Generates a list of maneuvers to display based on POST parameters.
+    Displays the main search page, to be later filled with data via AJAX.
     """
+    mans = Maneuver.objects.filter(has_errata_elsewhere=False)
+    return render(request, "search.html", {"form": SearchForm()})
 
-    post_body = {}  # Default value
-    form = SearchForm()  # Default value
 
-    if request.method == 'POST':
-        if "clear" not in request.POST:  # If the "clear" submit button was pressed, reset
-            post_body = request.POST
-            form = SearchForm(post_body)
+def perform_search(request):
+    """
+    Generates a list of maneuvers to display based on POST parameters.
+    Returns their names and slugs in JSON format.
+    """
+    if request.method == "POST":
+        post_body = request.POST
 
-    # Maneuver list
-    ml = Maneuver.objects
-    # Maneuvers that have been errata'd should not be displayed.
-    ml = ml.filter(has_errata_elsewhere=False)
+        # Maneuver list
+        ml = Maneuver.objects
+        # Maneuvers that have been errata'd should not be displayed.
+        ml = ml.filter(has_errata_elsewhere=False)
 
-    # If we arrived via POST request, perform successive filtering based on its contents.
-    # Otherwise, no filtering, all maneuvers are returned.
-    if len(post_body) > 0:
-        name = post_body["maneuver_name"]
-        if len(name) > 0:
-            ml = ml.filter(name__icontains=name)
+        # Perform successive filtering based on POST contents.
+        if len(post_body) > 0:
+            if "maneuver_name" in post_body:
+                name = post_body["maneuver_name"]
+                if len(name) > 0:
+                    ml = ml.filter(name__icontains=name)
 
-        if "level" in post_body:
-            ml = ml.filter(level__in=post_body.getlist("level"))
+            if "level" in post_body:
+                ml = ml.filter(level__in=post_body.getlist("level"))
 
-        if "discipline" in post_body:
-            ml = ml.filter(discipline__name__in=post_body.getlist("discipline"))
+            if "discipline" in post_body:
+                ml = ml.filter(discipline__name__in=post_body.getlist("discipline"))
 
-        if "requirements" in post_body:
-            ml = ml.filter(requirements__in=post_body.getlist("requirements"))
+            if "requirements" in post_body:
+                ml = ml.filter(requirements__in=post_body.getlist("requirements"))
 
-        if "type" in post_body:
-            ml = ml.filter(type__name__in=post_body.getlist("type"))
+            if "type" in post_body:
+                ml = ml.filter(type__name__in=post_body.getlist("type"))
 
-    number = ml.count()
+        return_list = []
+        for mans in ml.values("name", "slug"):
+            return_list.append({"name": mans["name"], "slug": mans["slug"]})
 
-    return render(request, "search.html",
-                  {"form": form, "maneuvers": ml.all(), "number": number})
+        return JsonResponse(return_list, safe=False)
 
 
 def maneuver(request, man_slug):
