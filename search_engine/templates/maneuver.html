@@ -2,7 +2,9 @@
 
 {% block content %}
     <div class="col-md-6">
-        <h2>{{ maneuver.name }} <small>p. {{ maneuver.page }}</small></h2>
+        <h2>{{ maneuver.name }}
+            <small>p. {{ maneuver.page }}</small>
+        </h2>
 
         <p>{{ maneuver.discipline }}
             {% if maneuver.type %}
@@ -16,6 +18,8 @@
                 {% endfor %}
             {% endif %}
         </p>
+
+        <p>
 
         <div><strong>Level:</strong>
             {% for initiator_class in initiator_classes %}
@@ -57,11 +61,11 @@
             <div><strong>Saving throw:</strong> {{ maneuver.saving_throw }}
             </div>
         {% endif %}
+        </p>
 
         <div>
             {{ maneuver.html_description|safe }}
         </div>
-{#        <p><strong>Page: {{ maneuver.page }}</strong></p>#}
 
         {% if maneuver.alternate_version %}
             This maneuver has been updated by errata. See
