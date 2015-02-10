@@ -99,7 +99,7 @@ function updateResults(jsonData) {
 }
 
 function showMessage(id) {
-    $(".message").hide();
+    $(".alert").hide();
     $(id).show();
 }
 
@@ -133,7 +133,6 @@ $('#main-form').on('submit', function (event) {
  */
 
 function initialize() {
-    $(".message").hide();
     getManeuvers()
 }
 $(initialize());

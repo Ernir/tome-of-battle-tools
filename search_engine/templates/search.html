@@ -9,15 +9,15 @@
         {% crispy form %}
     </div>
     <div class="col-md-6">
-        <h2 id="results-title">Results</h2>
+{#        <h2 id="results-title">Results</h2>#}
 
-        <p id="results-found" class="bg-success message">Maneuvers found.</p>
+        <p id="results-found" class="alert alert-success">Maneuvers found.</p>
 
-        <p id="results-working" class="bg-info message">Querying...</p>
+        <p id="results-working" class="alert alert-info">Querying...</p>
 
-        <p id="results-none" class="bg-info message">Nothing was found. Try another search?</p>
+        <p id="results-none" class="alert alert-info">Nothing was found. Try another search?</p>
 
-        <p id="results-error" class="bg-danger message">Something went wrong with your request. Please check your internet connection and try again.</p>
+        <p id="results-error" class="alert alert-danger">Something went wrong with your request. Please check your internet connection and try again.</p>
 
         <ul id="results-list">
         </ul>

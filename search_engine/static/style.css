@@ -27,3 +27,9 @@ body {
 #footer {
     height: 60px;
 }
+
+
+/* Search page has multiple alert boxes in HTML, hidden on page initialization. */
+.alert {
+    display: none;
+}
