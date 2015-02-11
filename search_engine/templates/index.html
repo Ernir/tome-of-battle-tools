@@ -5,12 +5,21 @@
         <h2 id="about">The Unofficial Tome of Battle Tools Page</h2>
 
         <p>
-            The collection of tools consists of the following applications:
+            The collection of tools currently consists of the following pages:
         <ul>
-            <li><a href="{% url "search_engine.views.search" %}">Maneuver search
+            <li><a href="{% url "search_engine.views.search" %}">A maneuver search
                 engine</a></li>
+            <li>And the following indexes:
+                <ul>
+                    <li><a href="{% url "search_engine.views.maneuvers_alphabetical" %}">All
+                        maneuvers in alphabetical order</a></li>
+                    <li><a href="{% url "search_engine.views.maneuvers_by_discipline" %}">All
+                        Maneuvers by discipline</a></li>
+                    <li><a href="{% url "search_engine.views.maneuvers_by_level" %}">All
+                        Maneuvers by level</a></li>
+                </ul>
+            </li>
         </ul>
-        ... and that's it, currently.
         </p>
         <h2 id="links">Tome of Battle Links</h2>
         <ul>
@@ -22,7 +31,8 @@
                 <a href="http://www.amazon.com/Tome-Battle-Dungeons-Dragons-Roleplaying/dp/0786939222">The
                     Tome of Battle on Amazon.com</a> - buy it now!
             </li>
-            <li><a href="http://rpg.stackexchange.com/questions/tagged/tome-of-battle">Tome of Battle on rpg.stackexchange.com.</a></li>
+            <li><a href="http://rpg.stackexchange.com/questions/tagged/tome-of-battle">Tome
+                of Battle on rpg.stackexchange.com.</a></li>
         </ul>
     </div>
 {% endblock %}
