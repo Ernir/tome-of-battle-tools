@@ -77,8 +77,7 @@ class SearchForm(forms.Form):
                 Div(
                     Field("discipline"),
                     css_class="col-md-6"
-                ),
-                css_class="row"
+                )
             ),
             Div(
                 Div(
@@ -88,8 +87,7 @@ class SearchForm(forms.Form):
                 Div(
                     Field("type"),
                     css_class="col-md-6"
-                ),
-                css_class="row"
+                )
             )
         )
     )

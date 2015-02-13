@@ -4,6 +4,8 @@
  https://realpython.com/blog/python/django-and-ajax-form-submissions/
  */
 
+"use strict";
+
 // This function gets cookie with a given name
 function getCookie(name) {
     var cookieValue = null;
