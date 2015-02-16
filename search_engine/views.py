@@ -148,11 +148,19 @@ def maneuvers_by_level(request):
 def about(request):
     """
 
-    Miniature view, only action is to the number of completed maneuvers (without dupes).
+    Miniature view. Only relevant data is counting the number of indexed maneuvers
     """
+
+    total_number = 208
     number = Maneuver.objects.filter(has_errata_elsewhere=False).count()
+    percent_complete = int(number/total_number*100)
+
     return render(
         request,
         "about.html",
-        {"number": number}
+        {
+            "number": number,
+            "total": total_number,
+            "percent": percent_complete
+        }
     )

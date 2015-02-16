@@ -2,12 +2,19 @@
 
 {% block content %}
     <div class="col-md-6">
+        <h2>Site completion</h2>
+
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
+                {{ percent }}%
+            </div>
+        </div>
+        <p>The site is fully functional, but not all data has been entered. It currently indexes {{ number }} out of the {{ total }} maneuvers in the <em>Tome of Battle.</em></p>
+
         <h2 id="about">About This Site</h2>
 
         <p>This site contains and presents data from the <em>Tome of Battle: the Book of Nine Swords</em>, intended to supplement access to the physical book.</p>
         <p>Previously, the information has been made publicly available by <em>Wizards of the Coast</em> only in the form of maneuver cards (see <a href="{% url "search_engine.views.index" %}#links">links</a>), this site provides indexes and filtering options for the information they contain.</p>
-
-        <p>It currently indexes {{ number }} out of the book's 208 maneuvers.</p>
 
         <h2 id="changes">Changes from the Text of the Book</h2>
 
