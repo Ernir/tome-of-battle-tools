@@ -15,6 +15,7 @@ admin.site.register(models.SavingThrow)
 
 class ManeuverAdmin(admin.ModelAdmin):
     exclude = ("slug", "html_description")  # these are auto-generated
+    save_as = True
 
 
 class DisciplineAdmin(admin.ModelAdmin):
