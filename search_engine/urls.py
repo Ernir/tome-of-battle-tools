@@ -10,6 +10,7 @@ urlpatterns = \
              url(r"maneuvers-alphabetical/", views.maneuvers_alphabetical, name="maneuvers_alphabetical"),
              url(r"maneuvers-by-discipline/", views.maneuvers_by_discipline, name="maneuvers_by_discipline"),
              url(r"maneuvers-by-level/", views.maneuvers_by_level, name="maneuvers-by-level"),
+             url(r"statistics/", views.statistics, name="statistics"),
 
              url(r"^api/search/$", views.perform_search, name="perform_search"),
     )

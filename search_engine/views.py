@@ -2,7 +2,8 @@ import string
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from search_engine.forms import SearchForm
-from search_engine.models import Maneuver, Discipline
+from search_engine.models import Maneuver, Discipline, ManeuverType
+from django.db.models import Count, Avg
 
 
 def index(request):
@@ -145,6 +146,56 @@ def maneuvers_by_level(request):
     )
 
 
+def statistics(request):
+    """
+
+    Calculates various interesting statistics to show.
+    Don't go here on an empty DB, it will cause zero divisions.
+    """
+
+    # Reference to all maneuevers, excluding maneuvers made obsolete by unofficial errata.
+    all_unique = Maneuver.objects.filter(has_errata_elsewhere=False)
+    all_unique_num = all_unique.count()
+
+    # First item: Statistics on how many maneuvers have been modified by errata.
+    errata_num = Maneuver.objects.filter(has_errata_elsewhere=True).count()
+    errata_percent = int(errata_num / all_unique_num * 100)
+
+    # Second item: Statistics on various types of maneuvers.
+    type_names = [man_type.name for man_type in ManeuverType.objects.all()]
+    type_overview = {}
+    for type_name in type_names:
+        type_num = all_unique.filter(type__name=type_name).count()
+        type_ratio = int(type_num / all_unique_num * 100)
+        type_overview[type_name.lower()] = {"num": type_num, "percent": type_ratio}
+
+    # Third item: Statistics on number of maneuvers per discipline.
+    disciplines = Discipline.objects.filter(maneuvers__has_errata_elsewhere=False)\
+        .annotate(num_mans=Count("maneuvers")).order_by("num_mans")
+    average_num = round(disciplines.aggregate(Avg("num_mans"))["num_mans__avg"])
+    largest_discipline = disciplines[len(disciplines)-1]
+    largest_discipline_share = int(largest_discipline.num_mans / all_unique_num * 100)
+    smallest_discipline = disciplines[0]
+    smallest_discipline_share = int(smallest_discipline.num_mans / all_unique_num * 100)
+
+    return render(
+        request,
+        "stats.html",
+        {
+            "errata_num": errata_num,
+            "errata_percent": errata_percent,
+
+            "types": type_overview,
+
+            "average_num": average_num,
+            "largest_discipline": largest_discipline,
+            "largest_discipline_share": largest_discipline_share,
+            "smallest_discipline": smallest_discipline,
+            "smallest_discipline_share": smallest_discipline_share
+        }
+    )
+
+
 def about(request):
     """
 
@@ -153,7 +204,7 @@ def about(request):
 
     total_number = 208
     number = Maneuver.objects.filter(has_errata_elsewhere=False).count()
-    percent_complete = int(number/total_number*100)
+    percent_complete = int(number / total_number * 100)
 
     return render(
         request,
