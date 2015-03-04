@@ -166,7 +166,7 @@ def statistics(request):
 
     # First item: Statistics on how many maneuvers have been modified by errata.
     errata_num = Maneuver.maneuvers_with_errata.count()
-    errata_percent = int(errata_num / all_unique_num * 100)
+    errata_percent = round(errata_num / all_unique_num * 100)
 
     # Second item: Statistics on various types of maneuvers.
     type_overview = ManeuverType.get_type_overview()
@@ -176,10 +176,10 @@ def statistics(request):
     average_num = round(
         ordered_disciplines.aggregate(Avg("num_mans"))["num_mans__avg"])
     largest_discipline = ordered_disciplines[len(ordered_disciplines) - 1]
-    largest_discipline_share = int(
+    largest_discipline_share = round(
         largest_discipline.num_mans / all_unique_num * 100)
     smallest_discipline = ordered_disciplines[0]
-    smallest_discipline_share = int(
+    smallest_discipline_share = round(
         smallest_discipline.num_mans / all_unique_num * 100)
 
     return render(
@@ -207,7 +207,7 @@ def errata_numbers(request):
 
     all_num = Maneuver.objects.count()
     errata_num = Maneuver.maneuvers_with_errata.count()
-    errata_free_num = all_num - errata_num
+    errata_free_num = all_num - errata_num*2
 
     return_dict = {
         "errata_num": errata_num,
@@ -229,6 +229,7 @@ def type_numbers(request):
 
 def discipline_numbers(request):
     """
+    Returns the number of maneuvers in each discipline, in JSON format.
     """
 
     disciplines = Discipline.by_count().all()
