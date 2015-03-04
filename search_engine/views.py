@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from search_engine.forms import SearchForm
 from search_engine.models import Maneuver, Discipline, ManeuverType
-from django.db.models import Count, Avg
+from django.db.models import Avg, Count
 
 
 def index(request):
@@ -42,17 +42,20 @@ def perform_search(request):
                 ml = ml.filter(level__in=post_body.getlist("level"))
 
             if "discipline" in post_body:
-                ml = ml.filter(discipline__name__in=post_body.getlist("discipline"))
+                ml = ml.filter(
+                    discipline__name__in=post_body.getlist("discipline"))
 
             if "requirements" in post_body:
-                ml = ml.filter(requirements__in=post_body.getlist("requirements"))
+                ml = ml.filter(
+                    requirements__in=post_body.getlist("requirements"))
 
             if "type" in post_body:
                 ml = ml.filter(type__name__in=post_body.getlist("type"))
 
         return_list = []
         for mans in ml.values("name", "slug"):
-            return_list.append({"name": mans["name"], "slug": mans["slug"]})
+            return_list.append(
+                {"name": mans["name"], "slug": mans["slug"]})
 
         return JsonResponse(return_list, safe=False)
 
@@ -68,7 +71,8 @@ def maneuver(request, man_slug):
     descriptors = the_maneuver.descriptor.all()
 
     return render(request, "maneuver.html",
-                  {"maneuver": the_maneuver, "initiator_classes": available_to,
+                  {"maneuver": the_maneuver,
+                   "initiator_classes": available_to,
                    "descriptors": descriptors})
 
 
@@ -83,12 +87,14 @@ def maneuvers_alphabetical(request):
     alphabet = string.ascii_uppercase
 
     maneuver_bag = {}
-    chunk_breaks = ["F", "Q", "Z"]  # The letters where we break the columns.
+    chunk_breaks = ["F", "Q",
+                    "Z"]  # The letters where we break the columns.
     chunks = []
 
     mans = Maneuver.objects.filter(has_errata_elsewhere=False)
     for letter in alphabet:
-        mans_starting_with_letter = mans.filter(name__startswith=letter).all()
+        mans_starting_with_letter = mans.filter(
+            name__startswith=letter).all()
         if len(mans_starting_with_letter) > 0:
             maneuver_bag[letter] = mans_starting_with_letter
         if letter in chunk_breaks:
@@ -114,7 +120,8 @@ def maneuvers_by_discipline(request):
     """
     disciplines = Discipline.objects.all()
 
-    return render(request, "maneuvers_by_discipline.html", {"disciplines": disciplines})
+    return render(request, "maneuvers_by_discipline.html",
+                  {"disciplines": disciplines})
 
 
 def maneuvers_by_level(request):
@@ -129,11 +136,11 @@ def maneuvers_by_level(request):
 
     maneuvers = {}
     for level in levels:
-        maneuvers_of_level = Maneuver.objects.filter(level=level,
-                                                     has_errata_elsewhere=False)
+        maneuvers_of_level = Maneuver.unique_objects.filter(level=level)
         sublist = {}
         for discipline in disciplines:
-            sublist[discipline] = maneuvers_of_level.filter(discipline=discipline).all()
+            sublist[discipline] = maneuvers_of_level.filter(
+                discipline=discipline).all()
         maneuvers[level] = sublist
 
     return render(
@@ -154,29 +161,26 @@ def statistics(request):
     """
 
     # Reference to all maneuevers, excluding maneuvers made obsolete by unofficial errata.
-    all_unique = Maneuver.objects.filter(has_errata_elsewhere=False)
-    all_unique_num = all_unique.count()
+    all_unique = Maneuver.unique_objects
+    all_unique_num = Maneuver.unique_objects.count()
 
     # First item: Statistics on how many maneuvers have been modified by errata.
-    errata_num = Maneuver.objects.filter(has_errata_elsewhere=True).count()
+    errata_num = Maneuver.maneuvers_with_errata.count()
     errata_percent = int(errata_num / all_unique_num * 100)
 
     # Second item: Statistics on various types of maneuvers.
-    type_names = [man_type.name for man_type in ManeuverType.objects.all()]
-    type_overview = {}
-    for type_name in type_names:
-        type_num = all_unique.filter(type__name=type_name).count()
-        type_ratio = int(type_num / all_unique_num * 100)
-        type_overview[type_name.lower()] = {"num": type_num, "percent": type_ratio}
+    type_overview = ManeuverType.get_type_overview()
 
     # Third item: Statistics on number of maneuvers per discipline.
-    disciplines = Discipline.objects.filter(maneuvers__has_errata_elsewhere=False)\
-        .annotate(num_mans=Count("maneuvers")).order_by("num_mans")
-    average_num = round(disciplines.aggregate(Avg("num_mans"))["num_mans__avg"])
-    largest_discipline = disciplines[len(disciplines)-1]
-    largest_discipline_share = int(largest_discipline.num_mans / all_unique_num * 100)
-    smallest_discipline = disciplines[0]
-    smallest_discipline_share = int(smallest_discipline.num_mans / all_unique_num * 100)
+    ordered_disciplines = Discipline.by_count().all()
+    average_num = round(
+        ordered_disciplines.aggregate(Avg("num_mans"))["num_mans__avg"])
+    largest_discipline = ordered_disciplines[len(ordered_disciplines) - 1]
+    largest_discipline_share = int(
+        largest_discipline.num_mans / all_unique_num * 100)
+    smallest_discipline = ordered_disciplines[0]
+    smallest_discipline_share = int(
+        smallest_discipline.num_mans / all_unique_num * 100)
 
     return render(
         request,
@@ -194,6 +198,49 @@ def statistics(request):
             "smallest_discipline_share": smallest_discipline_share
         }
     )
+
+
+def errata_numbers(request):
+    """
+    Returns the number of maneuvers with and without errata, in JSON format.
+    """
+
+    all_num = Maneuver.objects.count()
+    errata_num = Maneuver.maneuvers_with_errata.count()
+    errata_free_num = all_num - errata_num
+
+    return_dict = {
+        "errata_num": errata_num,
+        "errata_free_num": errata_free_num
+    }
+
+    return JsonResponse(return_dict)
+
+
+def type_numbers(request):
+    """
+    Returns the number of maneuvers of each maneuver type, in JSON format.
+    """
+
+    type_overview = ManeuverType.get_type_overview()
+
+    return JsonResponse(type_overview)
+
+
+def discipline_numbers(request):
+    """
+    """
+
+    disciplines = Discipline.by_count().all()
+
+    discipline_overview = []
+    for discipline in disciplines:
+        discipline_overview.insert(0, ({
+            "name": discipline.name,
+            "count": discipline.num_mans
+        }))
+
+    return JsonResponse(discipline_overview, safe=False)
 
 
 def about(request):

@@ -1,15 +1,22 @@
 from django.db import models
+from django.db.models import Count
 from django.utils.text import slugify
 from markdown import markdown
-from markdown.extensions import tables
+from search_engine.Managers import UniqueManeuverManager, \
+    ManeuverWithErrataManager
 
 
 class Discipline(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
 
-    def save(self, *args, **kwargs):
+    @classmethod     # TODO make this a manager
+    def by_count(cls):
+        return cls.objects.filter(
+            maneuvers__has_errata_elsewhere=False).annotate(
+            num_mans=Count("maneuvers")).order_by("num_mans")
 
+    def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Discipline, self).save(*args, **kwargs)
 
@@ -19,6 +26,20 @@ class Discipline(models.Model):
 
 class ManeuverType(models.Model):
     name = models.CharField(max_length=200)
+
+    @classmethod
+    def get_type_overview(cls):
+        type_names = [man_type.name for man_type in cls.objects.all()]
+        type_overview = {}
+        for type_name in type_names:
+            type_num = Maneuver.unique_objects.filter(
+                type__name=type_name).count()
+            type_ratio = int(
+                type_num / Maneuver.unique_objects.count() * 100)
+            type_overview[type_name.lower()] = {"num": type_num,
+                                                "percent": type_ratio}
+
+        return type_overview
 
     def __str__(self):
         return self.name
@@ -33,7 +54,8 @@ class Descriptor(models.Model):
 
 class InitiatorClass(models.Model):
     name = models.CharField(max_length=200)
-    disciplines = models.ManyToManyField(Discipline, related_name="initiator_classes")
+    disciplines = models.ManyToManyField(Discipline,
+                                         related_name="initiator_classes")
 
     def __str__(self):
         return self.name
@@ -123,16 +145,21 @@ class Maneuver(models.Model):
     has_errata_elsewhere = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-
         self.slug = slugify(self.name)
         self.descriptive_text = self.descriptive_text.replace("’", "'")
         self.descriptive_text = self.descriptive_text.strip()
-        self.html_description = markdown(self.descriptive_text, extensions=["tables"])
-        self.html_description = self.html_description.replace("<table>", "<table class='table'>")
+        self.html_description = markdown(self.descriptive_text,
+                                         extensions=["tables"])
+        self.html_description = self.html_description.replace("<table>",
+                                                              "<table class='table'>")
         super(Maneuver, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
+    objects = models.Manager()
+    unique_objects = UniqueManeuverManager()
+    maneuvers_with_errata = ManeuverWithErrataManager()
 
     class Meta:
         ordering = ("name",)
