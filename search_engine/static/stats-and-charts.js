@@ -6,21 +6,22 @@ function initializeCharts() {
 
     Chart.defaults.global.animation = false;
 
+    // AJAX calls. Each chart is created on the callback.
     $.get("/api/statistics/errata/", function (data) {
         makeErrataChart(data);
     });
-    $.get("/api/statistics/types/", function(data) {
+    $.get("/api/statistics/types/", function (data) {
         makeTypeChart(data);
     });
-    $.get("/api/statistics/disciplines/", function(data) {
+    $.get("/api/statistics/disciplines/", function (data) {
         makeDisciplineChart(data);
     })
 }
 
 function makeErrataChart(rawData) {
     var ctx = $("#errata-chart").get(0).getContext("2d");
-    var baseColors = ["#F04124","#5AD3D1"];
-    var lightenedColors = ["#FF5B3E","#74EDEB"];
+    var baseColors = ["#F04124", "#5AD3D1"];
+    var lightenedColors = ["#FF5B3E", "#74EDEB"];
 
     // Only two items, creating them manually.
     var chartData = [
@@ -46,7 +47,7 @@ function makeErrataChart(rawData) {
 
 function makeTypeChart(rawData) {
     var ctx = $("#type-number-chart").get(0).getContext("2d");
-    var baseColors =      ["#F04124", "#EBDB32", "#74E740", "#4EE291", "#5AD3D1"];
+    var baseColors = ["#F04124", "#EBDB32", "#74E740", "#4EE291", "#5AD3D1"];
     var lightenedColors = ["#FF5B3E", "#FFF54C", "#8EFF5A", "#68FCAB", "#74EDEB"];
 
     var chartData = [];
@@ -54,6 +55,7 @@ function makeTypeChart(rawData) {
     // Extracting the relevant JSON data.
     var types = Object.keys(rawData);
     for (var i = 0; i < types.length; i++) {
+        // Creating capitalized labels from the raw titles, see below
         var label = capitalizeFirstLetter(types[i]) + "s";
         var currentObject = {
             value: rawData[types[i]]["num"],
@@ -77,27 +79,43 @@ function capitalizeFirstLetter(string) {
 
 function makeDisciplineChart(rawData) {
     var ctx = $("#discipline-size-chart").get(0).getContext("2d");
-    var baseColors =      ["#F04124", "#ED922B", "#EBDB32", "#BE4939", "#74E740", "#47E452", "#4EE291", "#53E0CA", "#5AD3D1"];
+    var baseColors = ["#F04124", "#ED922B", "#EBDB32", "#BE4939", "#74E740", "#47E452", "#4EE291", "#53E0CA", "#5AD3D1"];
     var lightenedColors = ["#FF5B3E", "#FFAC45", "#FFF54C", "#D86353", "#8EFF5A", "#61FE6C", "#68FCAB", "#6DFAE4", "#74EDEB"];
 
-    var chartData = [];
+    var chartLabels = [];
+    var chartValues = [];
 
     // Parsing the JSON
     for (var i = 0; i < rawData.length; i++) {
-        var currentObject = {
-            value: rawData[i]["count"],
-            color: baseColors[i],
-            highlight: lightenedColors[i],
-            label: rawData[i]["name"]
-        };
-        chartData.push(currentObject);
+        chartValues.push(rawData[i]["count"]);
+        chartLabels.push(rawData[i]["name"]);
     }
-    console.log(chartData);
 
-    new Chart(ctx).Pie(chartData, {
-        showScale: true,
-        animateScale: true
+    var chartData = {
+        labels: chartLabels,
+        datasets: [
+            {
+                fillColor: baseColors[0], // Default color
+                strokeColor: "#ffffff", // Surrounded by white
+                highlightFill: lightenedColors[0],
+                highlightStroke: "#ffffff",
+                data: chartValues
+            }
+        ]
+    };
+
+    var bar = new Chart(ctx).Bar(chartData, {
+        showScale: true
     });
+
+    // Setting the colors
+    var n = bar.datasets[0].bars.length;
+    for (var j = 0; j < n; j++) {
+        var currentBar = bar.datasets[0].bars[j];
+        currentBar.fillColor = baseColors[j];
+        currentBar.highlightFill = lightenedColors[j];
+    }
+    bar.update();
 }
 
 $(initializeCharts());
