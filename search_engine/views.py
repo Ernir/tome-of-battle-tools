@@ -87,8 +87,9 @@ def maneuvers_alphabetical(request):
     alphabet = string.ascii_uppercase
 
     maneuver_bag = {}
-    chunk_breaks = ["F", "Q",
-                    "Z"]  # The letters where we break the columns.
+    # The letters where we break the columns.
+    # This could be calculated with a fancy algorithm, but that's overkill.
+    chunk_breaks = ["F", "Q", "Z"]
     chunks = []
 
     mans = Maneuver.objects.filter(has_errata_elsewhere=False)
@@ -161,7 +162,6 @@ def statistics(request):
     """
 
     # Reference to all maneuevers, excluding maneuvers made obsolete by unofficial errata.
-    all_unique = Maneuver.unique_objects
     all_unique_num = Maneuver.unique_objects.count()
 
     # First item: Statistics on how many maneuvers have been modified by errata.
@@ -186,6 +186,8 @@ def statistics(request):
         request,
         "stats.html",
         {
+            "number": all_unique_num,
+
             "errata_num": errata_num,
             "errata_percent": errata_percent,
 

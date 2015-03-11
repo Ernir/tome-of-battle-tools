@@ -3,8 +3,14 @@
 
 {% block content %}
     <h2>Statistics</h2>
+    <div class="row">
+    <div class="col-md-6">
+        This site indexes all {{ number }} maneuvers from the <em>Tome of Battle.</em>
+    </div>
+    </div>
     <div class="row top30">
-        <div class="col-md-6">{{ errata_num }} maneuvers
+        <div class="col-md-6">
+            {{ errata_num }} maneuvers
             ({{ errata_percent }}% of total) have been modified by the
             unofficial errata.
         </div>

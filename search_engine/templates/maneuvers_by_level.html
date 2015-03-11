@@ -6,11 +6,11 @@
     {% for level in maneuvers %}
         <h3>Maneuvers of level {{ level }}</h3>
         {% for discipline in maneuvers|keyvalue:level %}
-            <h4>{{ discipline }}</h4>
+            <p><strong>{{ discipline }}</strong></p>
             <ul>
                 {% for maneuver in maneuvers|keyvalue:level|keyvalue:discipline %}
                     <li>
-                        <a href="/maneuvers/{{ maneuver.slug }}/">{{ maneuver.name }}</a>
+                        <a href="/maneuvers/{{ maneuver.slug }}/">{{ maneuver.name }}</a> ({{ maneuver.type }})
                     </li>
                 {% endfor %}
             </ul>
