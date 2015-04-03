@@ -12,10 +12,3 @@ class ManeuverWithErrataManager(models.Manager):
     def get_queryset(self):
         return super(ManeuverWithErrataManager, self). \
             get_queryset().filter(has_errata_elsewhere=True)
-
-
-# class DisciplineAnnotationManager(models.Manager):
-#     def get_queryset(self):
-#         return super(DisciplineAnnotationManager, self).filter(
-#             maneuvers__has_errata_elsewhere=False).annotate(
-#             num_mans=Count("maneuvers")).order_by("num_mans")
