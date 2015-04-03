@@ -42,25 +42,60 @@ body {
     body {
         font-size: 20px; /* from 15px */
     }
+
     h2 {
         font-size: 43px; /* from 32px */
     }
+
     .alert {
         font-size: 16px; /* from 12px */
     }
+
     .navbar-brand {
-        font-size: 23px;  /*from 19px, smaller factor here */
+        font-size: 23px; /*from 19px, smaller factor here */
     }
+
     .navbar {
-        font-size: 16px;  /*from 13px, smaller factor here */
+        font-size: 16px; /*from 13px, smaller factor here */
     }
+
     .form-control {
         font-size: 20px; /* from 15px */
     }
+
     label, .control-label, .help-block, .checkbox, .radio {
         font-size: 16px; /* from 12px */
     }
+
     .checkbox input[type="checkbox"] {
         margin-top: 5px;
+    }
+}
+
+/*
+Spinning the load indicator for queries.
+Source: http://www.bootply.com/128062
+*/
+
+.glyphicon-refresh-animate {
+    -animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: scale(1) rotate(0deg);
+    }
+    to {
+        transform: scale(1) rotate(360deg);
     }
 }
