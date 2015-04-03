@@ -96,7 +96,7 @@ function updateResults(jsonData) {
     var $results = $("#results-list");
     $results.empty();
     for (var i = 0; i < jsonData.length; i++) {
-        $results.append("<li><a href='/maneuvers/" + jsonData[i].slug + "'>" + jsonData[i].name + "</a></li>");
+        $results.append("<li><a href='/maneuvers/" + jsonData[i].slug + "/'>" + jsonData[i].name + "</a></li>");
     }
 }
 
