@@ -38,39 +38,39 @@ body {
 }
 
 /* Stupid font fixes for small screens. Scale most by 33%. */
-@media (max-width: 991px) {
-    body {
-        font-size: 20px; /* from 15px */
-    }
+/*@media (max-width: 991px) {*/
+    /*body {*/
+        /*font-size: 20px; *//* from 15px */
+    /*}*/
 
-    h2 {
-        font-size: 43px; /* from 32px */
-    }
+    /*h2 {*/
+        /*font-size: 43px; *//* from 32px */
+    /*}*/
 
-    .alert {
-        font-size: 16px; /* from 12px */
-    }
+    /*.alert {*/
+        /*font-size: 16px; *//* from 12px */
+    /*}*/
 
-    .navbar-brand {
-        font-size: 23px; /*from 19px, smaller factor here */
-    }
+    /*.navbar-brand {*/
+        /*font-size: 23px; *//*from 19px, smaller factor here */
+    /*}*/
 
-    .navbar {
-        font-size: 16px; /*from 13px, smaller factor here */
-    }
+    /*.navbar {*/
+        /*font-size: 16px; *//*from 13px, smaller factor here */
+    /*}*/
 
-    .form-control {
-        font-size: 20px; /* from 15px */
-    }
+    /*.form-control {*/
+        /*font-size: 20px; *//* from 15px */
+    /*}*/
 
-    label, .control-label, .help-block, .checkbox, .radio {
-        font-size: 16px; /* from 12px */
-    }
+    /*label, .control-label, .help-block, .checkbox, .radio {*/
+        /*font-size: 16px; *//* from 12px */
+    /*}*/
 
-    .checkbox input[type="checkbox"] {
-        margin-top: 5px;
-    }
-}
+    /*.checkbox input[type="checkbox"] {*/
+        /*margin-top: 5px;*/
+    /*}*/
+/*}*/
 
 /*
 Spinning the load indicator for queries.
