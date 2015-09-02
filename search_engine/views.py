@@ -34,7 +34,7 @@ def perform_search(request):
         # Perform successive filtering based on POST contents.
         if len(post_body) > 0:
             if "maneuver_name" in post_body:
-                name = post_body["maneuver_name"]
+                name = post_body["maneuver_name"].strip()
                 if len(name) > 0:
                     ml = ml.filter(name__icontains=name)
 
