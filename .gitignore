@@ -4,7 +4,7 @@ db.sqlite3
 venv/
 .idea/
 staticfiles/
-
+*.dump
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

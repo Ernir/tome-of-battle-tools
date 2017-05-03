@@ -9,11 +9,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url "search_engine.views.index" %}">Unofficial Tome of Battle Tools</a>
+            <a class="navbar-brand" href="{% url "index" %}">Unofficial Tome of Battle Tools</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="{% url "search_engine.views.search" %}">Search</a></li>
+                <li><a href="{% url "search" %}">Search</a></li>
             </ul>
             <ul class="nav navbar-nav">
                 <li class="dropdown">
@@ -21,17 +21,17 @@
                        role="button" aria-expanded="false">Indexes <span
                             class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="{% url "search_engine.views.maneuvers_alphabetical" %}">Alphabetical</a></li>
-                        <li><a href="{% url "search_engine.views.maneuvers_by_discipline" %}">By Discipline</a></li>
-                        <li><a href="{% url "search_engine.views.maneuvers_by_level" %}">By level</a></li>
+                        <li><a href="{% url "maneuvers_alphabetical" %}">Alphabetical</a></li>
+                        <li><a href="{% url "maneuvers_by_discipline" %}">By Discipline</a></li>
+                        <li><a href="{% url "maneuvers_by_level" %}">By level</a></li>
                     </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav">
-                <li><a href="{% url "search_engine.views.statistics" %}">Statistics</a></li>
+                <li><a href="{% url "statistics" %}">Statistics</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url "search_engine.views.about" %}">About/Legal</a></li>
+                <li><a href="{% url "about" %}">About/Legal</a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->
