@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from search_engine.forms import SearchForm
 from search_engine.models import Maneuver, Discipline, ManeuverType
-from django.db.models import Avg, Count
+from django.db.models import Avg
 
 
 def index(request):
@@ -14,7 +14,6 @@ def search(request):
     """
     Displays the main search page, to be later filled with data via AJAX.
     """
-    mans = Maneuver.objects.filter(has_errata_elsewhere=False)
     return render(request, "search.html", {"form": SearchForm()})
 
 
@@ -42,12 +41,10 @@ def perform_search(request):
                 ml = ml.filter(level__in=post_body.getlist("level"))
 
             if "discipline" in post_body:
-                ml = ml.filter(
-                    discipline__name__in=post_body.getlist("discipline"))
+                ml = ml.filter(discipline__name__in=post_body.getlist("discipline"))
 
             if "requirements" in post_body:
-                ml = ml.filter(
-                    requirements__in=post_body.getlist("requirements"))
+                ml = ml.filter(requirements__in=post_body.getlist("requirements"))
 
             if "type" in post_body:
                 ml = ml.filter(type__name__in=post_body.getlist("type"))
@@ -209,7 +206,7 @@ def errata_numbers(request):
 
     all_num = Maneuver.objects.count()
     errata_num = Maneuver.maneuvers_with_errata.count()
-    errata_free_num = all_num - errata_num*2
+    errata_free_num = all_num - errata_num * 2
 
     return_dict = {
         "errata_num": errata_num,
