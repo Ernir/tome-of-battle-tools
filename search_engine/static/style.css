@@ -28,10 +28,7 @@ body {
     height: 60px;
 }
 
-/* Search page has multiple alert boxes in HTML, hidden on page initialization. */
-.alert {
-    display: none;
-}
+/* Separators for the statistics page */
 
 .top30 {
     margin-top: 30px;

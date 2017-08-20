@@ -1,7 +1,6 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field, Div
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Field, Div, Submit
 
 
 class SearchForm(forms.Form):
@@ -72,23 +71,22 @@ class SearchForm(forms.Form):
             Div(
                 Div(
                     Field("level"),
-                    css_class="col-md-6"
+                    css_class="col-md-3"
                 ),
                 Div(
                     Field("discipline"),
-                    css_class="col-md-6"
-                )
-            ),
-            Div(
+                    css_class="col-md-3"
+                ),
                 Div(
                     Field("requirements"),
-                    css_class="col-md-6"
+                    css_class="col-md-3"
                 ),
                 Div(
                     Field("type"),
-                    css_class="col-md-6"
-                )
+                    css_class="col-md-3"
+                ),
+                css_class="row"
             )
         )
     )
-    helper.form_action = "/search/"
+    helper.add_input(Submit("submit", "Search"))

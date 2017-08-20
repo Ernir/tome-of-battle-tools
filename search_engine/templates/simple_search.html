@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block content %}
+    <h2>Search parameters</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{% url "simple_search" %}" method="post">
+                {% crispy form %}
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            {% if results %}
+                <p id="results-found" class="alert alert-success">{{ results.count }} maneuvers found</p>
+                <table id="results-table" class="table">
+                    <thead>
+                    <tr>
+                        <th>Maneuver name</th>
+                        <th>Level</th>
+                        <th>Discipline</th>
+                        <th>Requirements</th>
+                        <th>Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for result in results %}
+                        <tr>
+                            <td><a href="{% url "maneuver" result.slug %}">{{ result.name }}</a></td>
+                            <td>{{ result.level }}</td>
+                            <td>{{ result.discipline.name }}</td>
+                            <td>{{ result.requirements }}</td>
+                            <td>{{ result.type.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p id="results-none" class="alert alert-info">Nothing was found. Try another search?</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

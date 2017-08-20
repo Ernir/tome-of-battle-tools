@@ -17,6 +17,38 @@ def search(request):
     return render(request, "search.html", {"form": SearchForm()})
 
 
+def simple_search(request):
+    """
+    Displays a search page that works without JS.
+    """
+
+    # Maneuver list that will be displayed
+    ml = Maneuver.objects
+    # Maneuvers that have been errata'd should not be displayed.
+    ml = ml.filter(has_errata_elsewhere=False)
+
+    if request.method == "POST":
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data["maneuver_name"]:
+                name = form.cleaned_data["maneuver_name"].strip()
+                ml = ml.filter(name__icontains=name)
+            if form.cleaned_data["level"]:
+                ml = ml.filter(level__in=form.cleaned_data["level"])
+            if form.cleaned_data["discipline"]:
+                ml.select_related("discipline")
+                ml = ml.filter(discipline__name__in=form.cleaned_data["discipline"])
+            if form.cleaned_data["requirements"]:
+                ml = ml.filter(requirements__in=form.cleaned_data["requirements"])
+            if form.cleaned_data["type"]:
+                ml.select_related("type")
+                ml = ml.filter(type__name__in=form.cleaned_data["type"])
+    else:
+        form = SearchForm()
+
+    return render(request, "simple_search.html", {"form": form, "results": ml})
+
+
 def perform_search(request):
     """
     Generates a list of maneuvers to display based on POST parameters.
@@ -51,8 +83,7 @@ def perform_search(request):
 
         return_list = []
         for mans in ml.values("name", "slug"):
-            return_list.append(
-                {"name": mans["name"], "slug": mans["slug"]})
+            return_list.append({"name": mans["name"], "slug": mans["slug"]})
 
         return JsonResponse(return_list, safe=False)
 
