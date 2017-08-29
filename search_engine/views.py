@@ -53,7 +53,9 @@ def perform_search(request):
     """
     Generates a list of maneuvers to display based on POST parameters.
     Returns their names and slugs in JSON format.
+    This is used by the "old" endpoint. Should not be called by the application itself as it is right now.
     """
+
     if request.method == "POST":
         post_body = request.POST
 
@@ -84,8 +86,20 @@ def perform_search(request):
         return_list = []
         for mans in ml.values("name", "slug"):
             return_list.append({"name": mans["name"], "slug": mans["slug"]})
-
         return JsonResponse(return_list, safe=False)
+
+
+def get_maneuvers(request):
+    ml = Maneuver.objects.filter(has_errata_elsewhere=False).all()
+    return_list = [{
+        "id": m.id,
+        "name": m.name,
+        "level": m.level,
+        "discipline": m.discipline.name,
+        "requirements": m.requirements,
+        "type": m.type.name
+    } for m in ml]
+    return JsonResponse(return_list, safe=False)
 
 
 def maneuver(request, man_slug):

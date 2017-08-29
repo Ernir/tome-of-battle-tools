@@ -13,6 +13,7 @@ urlpatterns = [
     url(r"^simple-search/", views.simple_search, name="simple_search"),
 
     url(r"^api/search/$", views.perform_search, name="perform_search"),
+    url(r"^api/get-all-maneuvers/$", views.get_maneuvers, name="get_maneuvers"),
     url(r"^api/statistics/errata/$", views.errata_numbers, name="errata_numbers"),
     url(r"^api/statistics/types/$", views.type_numbers, name="type_numbers"),
     url(r"^api/statistics/disciplines/$", views.discipline_numbers, name="discipline_numbers")

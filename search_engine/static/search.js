@@ -1,140 +1,95 @@
 /*
- Code handling the search form AJAX.
- Mostly verbatim from here:
- https://realpython.com/blog/python/django-and-ajax-form-submissions/
+ * Vue.js based filter for maneuvers. Based on:
+ * https://jsfiddle.net/chrisvfritz/aomd3y9n/
  */
 
-"use strict";
+new Vue({
+    // -------------
+    // APP CONTAINER
+    // -------------
+    el: '#app',
 
-// This function gets cookie with a given name
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+    // --------
+    // RAW DATA
+    // --------
+
+    data: {
+        tableColumns: [
+            {
+                title: 'Maneuver name',
+                field: 'name'
+            }, {
+                title: 'Level',
+                field: 'level'
+            }, {
+                title: 'Discipline',
+                field: 'discipline'
+            }, {
+                title: "Requirements",
+                field: "requirements"
+            }, {
+                title: "Type",
+                field: "type"
+            }
+        ],
+        maneuvers: [],
+        filterQuery: '',
+        fetchError: false
+    },
+
+    // ------------
+    // DERIVED DATA
+    // ------------
+    computed: {
+        filteredManeuvers: function () {
+            var vm = this;
+            return vm.maneuvers.filter(function (user) {
+                var regex = new RegExp(vm.filterQuery, 'i');
+                return regex.test(user.name);
+            });
+        },
+        statusMessage: function () {
+            if (this.fetchError) {
+                return "There was a problem fetching the maneuvers. Please try again later.";
+            }
+            if (this.maneuvers.length) {
+                if (!this.filteredManeuvers.length) {
+                    return "No matching maneuvers were found.";
+                }
+            } else {
+                return 'Loading...'
             }
         }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
+    },
 
-/*
- The functions below will create a header with csrftoken
- */
+    // ---------------
+    // LIFECYCLE HOOKS
+    // ---------------
+    created: function () {
+        this.fetchManeuvers()
+    },
 
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-function sameOrigin(url) {
-    // test that a given url is a same-origin URL
-    // url could be relative or scheme relative or absolute
-    var host = document.location.host; // host + port
-    var protocol = document.location.protocol;
-    var sr_origin = '//' + host;
-    var origin = protocol + sr_origin;
-    // Allow absolute or scheme relative URLs to same origin
-    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-        // or any other URL that isn't scheme relative or absolute i.e relative.
-        !(/^(\/\/|http:|https:).*/.test(url));
-}
-
-$.ajaxSetup({
-    beforeSend: function (xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-            // Send the token to same-origin, relative URLs only.
-            // Send the token only if the method warrants CSRF protection
-            // Using the CSRFToken value acquired earlier
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-
-// Main AJAX function
-var xhr;
-function getManeuvers() {
-    showMessage("#results-working");
-    xhr = $.ajax({
-        url: "/api/search/",
-        type: "post",
-        data: $("#main-form").serialize(),
-
-        success: function (json) {
-            updateResults(json);
+    // --------------
+    // SCOPED METHODS
+    // --------------
+    methods: {
+        fetchManeuvers: function () {
+            var vm = this;
+            vm.maneuvers = [];
+            vm.fetchError = false;
+            fetch('/api/get-all-maneuvers/')
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (maneuvers) {
+                    vm.maneuvers = maneuvers
+                })
+                .catch(function () {
+                    vm.fetchError = true
+                })
         },
-
-        error: function (xhr, errmsg, err) {
-            showMessage("#results-error");
+        getField: function (object, field) {
+            return object[field];
         }
-    });
-}
-
-function updateResults(jsonData) {
-
-    var numResults = jsonData.length;
-
-    // Handling the messages
-    if (numResults === 0) {
-        showMessage("#results-none");
-    } else {
-        if (numResults > 1) {
-            $("#results-found").text(numResults + " maneuvers found.");
-        } else { // 1 result
-            $("#results-found").text(numResults + " maneuver found");
-        }
-        showMessage("#results-found");
     }
-
-    // Writing out the lists
-    var $results = $("#results-list");
-    $results.empty();
-    for (var i = 0; i < jsonData.length; i++) {
-        $results.append("<li><a href='/maneuvers/" + jsonData[i].slug + "/'>" + jsonData[i].name + "</a></li>");
-    }
-}
-
-function showMessage(id) {
-    $(".alert").hide();
-    $(id).show();
-}
-
-/*
- Listeners
- */
-$("input[type=checkbox]").change(getManeuvers);
-
-// Delayed calls for the text box.
-// Source: http://stackoverflow.com/a/23569018/1675015
-var requestTimer;
-$("input[type=text]").keyup(function () {
-    showMessage("#results-working");
-    if (requestTimer) {
-        window.clearTimeout(requestTimer);
-    }
-    if (xhr) {
-        xhr.abort();
-    }
-    requestTimer = setTimeout(getManeuvers, 1000);
 });
-
-// Override for normal form behaviour
-$('#main-form').on('submit', function (event) {
-    event.preventDefault();
-    getManeuvers();
-});
-
-/*
- Initialization
- */
-
-function initialize() {
-    getManeuvers()
-}
-$(initialize());
