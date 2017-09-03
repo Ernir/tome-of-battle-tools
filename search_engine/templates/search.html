@@ -11,49 +11,214 @@
             </h1>
 
             <input v-model="maneuverName" placeholder="Exact partial maneuver name" class="form-control">
-            <div class="form-group">
-                <label for="" class="control-label ">
-                    Requirements
-                </label>
-                <div class="controls">
-                    <div class="checkbox">
-                        <label class="">
-                            <input type="checkbox" name="requirements" value="0" v-model="requirements">
-                            0
-                        </label>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="" class="control-label ">
+                        Level
+                    </label>
+                    <div class="controls">
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="1" v-model="levels">
+                                1
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="2" v-model="levels">
+                                2
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="3" v-model="levels">
+                                3
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="4" v-model="levels">
+                                4
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="5" v-model="levels">
+                                5
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="6" v-model="levels">
+                                6
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="7" v-model="levels">
+                                7
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="8" v-model="levels">
+                                8
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="9" v-model="levels">
+                                9
+                            </label>
+                        </div>
                     </div>
-                    <div class="checkbox">
-                        <label class="">
-                            <input type="checkbox" name="requirements" value="1" v-model="requirements">
-                            1
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label class="">
-                            <input type="checkbox" name="requirements" value="2" v-model="requirements">
-                            2
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label class="">
-                            <input type="checkbox" name="requirements" value="3" v-model="requirements">
-                            3
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label class="">
-                            <input type="checkbox" name="requirements" value="4" v-model="requirements">
-                            4
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label class="">
-                            <input type="checkbox" name="requirements" value=5 v-model="requirements">
-                            5
-                        </label>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="" class="control-label ">
+                        Discipline
+                    </label>
+                    <div class="controls">
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="Desert Wind" v-model="disciplines">
+                                Desert Wind
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="Devoted Spirit" v-model="disciplines">
+                                Devoted Spirit
+                            </label>
+                            <div class="checkbox">
+                                <label class="">
+                                    <input type="checkbox" value="Diamond Mind" v-model="disciplines">
+                                    Diamond Mind
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="">
+                                    <input type="checkbox" value="Iron Heart" v-model="disciplines">
+                                    Iron Heart
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="">
+                                    <input type="checkbox" value="Setting Sun" v-model="disciplines">
+                                    Setting Sun
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="">
+                                    <input type="checkbox" value="Shadow Hand" v-model="disciplines">
+                                    Shadow Hand
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="">
+                                    <input type="checkbox" value="Stone Dragon" v-model="disciplines">
+                                    Stone Dragon
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="">
+                                    <input type="checkbox" value="Tiger Claw" v-model="disciplines">
+                                    Tiger Claw
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="">
+                                    <input type="checkbox" value="White Raven" v-model="disciplines">
+                                    White Raven
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="" class="control-label ">
+                        Requirements
+                    </label>
+                    <div class="controls">
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="0" v-model="requirements">
+                                0
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="1" v-model="requirements">
+                                1
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="2" v-model="requirements">
+                                2
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="3" v-model="requirements">
+                                3
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="4" v-model="requirements">
+                                4
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value=5 v-model="requirements">
+                                5
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label for="" class="control-label ">
+                        Types
+                    </label>
+                    <div class="controls">
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="Boost" v-model="types">
+                                Boost
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="Counter" v-model="types">
+                                Counter
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="Stance" v-model="types">
+                                Stance
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="Strike" v-model="types">
+                                Strike
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="">
+                                <input type="checkbox" value="Other" v-model="types">
+                                Other
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="col-md-6">
             <table v-if="filteredManeuvers.length" class="table">
