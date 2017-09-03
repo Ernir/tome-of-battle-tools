@@ -38,3 +38,13 @@ body {
 [v-cloak] {
     display: none;
 }
+
+/* Table filter animations */
+/*TODO: Make them not ugly*/
+.maneuver-list-enter, .maneuver-list-leave-active {
+    display: none;
+}
+
+.maneuver-list-move {
+    transition: transform 0.5s;
+}

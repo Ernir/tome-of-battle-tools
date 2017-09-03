@@ -91,14 +91,7 @@ def perform_search(request):
 
 def get_maneuvers(request):
     ml = Maneuver.objects.filter(has_errata_elsewhere=False).all()
-    return_list = [{
-        "id": m.id,
-        "name": m.name,
-        "level": m.level,
-        "discipline": m.discipline.name,
-        "requirements": m.requirements,
-        "type": m.type.name
-    } for m in ml]
+    return_list = [m.serialize_to_dict() for m in ml]
     return JsonResponse(return_list, safe=False)
 
 

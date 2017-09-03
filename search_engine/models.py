@@ -10,7 +10,7 @@ class Discipline(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
 
-    @classmethod     # TODO make this a manager
+    @classmethod  # TODO make this a manager
     def by_count(cls):
         return cls.objects.filter(
             maneuvers__has_errata_elsewhere=False).annotate(
@@ -153,6 +153,50 @@ class Maneuver(models.Model):
         self.html_description = self.html_description.replace("<table>",
                                                               "<table class='table'>")
         super(Maneuver, self).save(*args, **kwargs)
+
+    def serialize_to_dict(self, long_form=False):
+        d = {
+            "id": self.id,
+            "name": self.name,
+            "level": self.level,
+            "discipline": self.discipline.name,
+            "requirements": self.requirements,
+            "type": self.type.name,
+            "slug": self.slug
+        }
+
+        if long_form:
+            d["descriptors"] = [descr.name for descr in self.descriptor.all()]
+            d["action"] = self.action.name
+            d["range"] = self.range.name
+            if self.target:
+                d["target"] = self.target.description
+            else:
+                d["target"] = None
+            if self.area:
+                d["area"] = self.area.description
+            else:
+                d["area"] = None
+            if self.effect:
+                d["effect"] = self.effect.description
+            else:
+                d["effect"] = None
+            if self.duration:
+                d["duration"] = self.duration.description
+            else:
+                d["duration"] = None
+            if self.saving_throw:
+                d["saving_throw"] = self.saving_throw.description
+            else:
+                d["saving_throw"] = None
+            d["text"] = self.descriptive_text
+            if self.alternate_version:
+                d["alternate_version_id"] = self.alternate_version.id
+            else:
+                d["alternate_version_id"] = None
+            d["obsolete"] = self.has_errata_elsewhere
+
+        return d
 
     def __str__(self):
         return self.name

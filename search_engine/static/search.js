@@ -3,7 +3,7 @@
  * https://jsfiddle.net/chrisvfritz/aomd3y9n/
  */
 
-new Vue({
+var app = new Vue({
     // -------------
     // APP CONTAINER
     // -------------
@@ -32,8 +32,13 @@ new Vue({
                 field: "type"
             }
         ],
+
         maneuvers: [],
-        filterQuery: '',
+
+
+        maneuverName: '',
+        requirements: [],
+
         fetchError: false
     },
 
@@ -43,10 +48,19 @@ new Vue({
     computed: {
         filteredManeuvers: function () {
             var vm = this;
-            return vm.maneuvers.filter(function (user) {
-                var regex = new RegExp(vm.filterQuery, 'i');
-                return regex.test(user.name);
+            return vm.maneuvers.filter(function (maneuver) {
+                var regex = new RegExp(vm.maneuverName, 'i');
+                return regex.test(maneuver.name)
+                    && (vm.integerRequirements.length === 0 || vm.integerRequirements.includes(maneuver.requirements));
             });
+        },
+        integerRequirements: function () {
+            var reqs = [];
+            // No fancy mapping due to hidden observers
+            for (var i = 0; i < this.requirements.length; i++) {
+                reqs.push(parseInt(this.requirements[i]));
+            }
+            return reqs;
         },
         statusMessage: function () {
             if (this.fetchError) {
