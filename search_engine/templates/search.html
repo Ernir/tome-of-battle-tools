@@ -2,6 +2,9 @@
 {% load staticfiles %}
 
 {% block content %}
+    <noscript>
+        No Javascript? Try <a href="{% url "simple_search" %}">simple search</a>.
+    </noscript>
     {% verbatim %}
     <div v-cloak id="app">
     <div class="row">
@@ -222,6 +225,7 @@
         </div>
         <div class="col-md-6">
             <table v-if="filteredManeuvers.length" class="table">
+                <p class="alert alert-success">{{ filteredManeuvers.length }} maneuvers found</p>
                 <thead>
                 <tr>
                     <th v-for="column in tableColumns">
@@ -231,9 +235,11 @@
                 </thead>
                 <tbody is="transition-group" name="maneuver-list">
                 <tr v-for="maneuver in filteredManeuvers" :key="maneuver.id">
-                    <td v-for="column in tableColumns">
-                        {{ getField(maneuver, column.field) }}
-                    </td>
+                    <td><a v-bind:href="'/maneuvers/' + maneuver.slug">{{ maneuver.name }}</a></td>
+                    <td>{{ maneuver.level }}</td>
+                    <td>{{ maneuver.discipline }}</td>
+                    <td>{{ maneuver.requirements }}</td>
+                    <td>{{ maneuver.type }}</td>
                 </tr>
                 </tbody>
             </table>

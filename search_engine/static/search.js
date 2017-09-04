@@ -54,17 +54,11 @@ var app = new Vue({
             return vm.maneuvers.filter(function (maneuver) {
                 var regex = new RegExp(vm.maneuverName, 'i');
                 return regex.test(maneuver.name)
-                    && (vm.integerRequirements.length === 0 || vm.integerRequirements.includes(maneuver.requirements))
-                    && (vm.integerLevels.length === 0 || vm.integerLevels.includes(maneuver.level))
+                    && (vm.requirements.length === 0 || vm.requirements.includes(maneuver.requirements.toString()))
+                    && (vm.levels.length === 0 || vm.levels.includes(maneuver.level.toString()))
                     && (vm.disciplines.length === 0 || vm.disciplines.includes(maneuver.discipline))
                     && (vm.types.length === 0 || vm.types.includes(maneuver.type));
             });
-        },
-        integerRequirements: function () {
-            return this.intify(this.requirements);
-        },
-        integerLevels: function () {
-            return this.intify(this.levels);
         }
         ,
         statusMessage: function () {
@@ -106,17 +100,6 @@ var app = new Vue({
                 .catch(function () {
                     vm.fetchError = true
                 })
-        },
-        getField: function (object, field) {
-            return object[field];
-        },
-        intify: function (stringArray) {
-            var intArray = [];
-            // No fancy mapping due to hidden observers this is supposed to work on
-            for (var i = 0; i < stringArray.length; i++) {
-                intArray.push(parseInt(stringArray[i]));
-            }
-            return intArray;
         }
     }
 });
