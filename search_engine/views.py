@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from search_engine.forms import SearchForm
 from search_engine.models import Maneuver, Discipline, ManeuverType
 from django.db.models import Avg
-
+from django.conf import settings
 
 def index(request):
     return render(request, "index.html")
@@ -14,7 +14,7 @@ def search(request):
     """
     Displays the main search page, to be later filled with data via AJAX.
     """
-    return render(request, "search.html", {"form": SearchForm()})
+    return render(request, "search.html", {"form": SearchForm(), "debug": settings.DEBUG})
 
 
 def simple_search(request):
