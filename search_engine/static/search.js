@@ -3,7 +3,7 @@
  * https://jsfiddle.net/chrisvfritz/aomd3y9n/
  */
 
-var app = new Vue({
+let app = new Vue({
     // -------------
     // APP CONTAINER
     // -------------
@@ -50,9 +50,9 @@ var app = new Vue({
     // ------------
     computed: {
         filteredManeuvers: function () {
-            var vm = this;
+            const vm = this;
             return vm.maneuvers.filter(function (maneuver) {
-                var regex = new RegExp(vm.maneuverName, 'i');
+                const regex = new RegExp(vm.maneuverName, 'i');
                 return regex.test(maneuver.name)
                     && (vm.requirements.length === 0 || vm.requirements.includes(maneuver.requirements.toString()))
                     && (vm.levels.length === 0 || vm.levels.includes(maneuver.level.toString()))
@@ -79,7 +79,78 @@ var app = new Vue({
     // LIFECYCLE HOOKS
     // ---------------
     created: function () {
+
+        // Extract URL params if they exist.
+        // Known to not work on Edge. ¯\_(ツ)_/¯
+        let searchParams = new URLSearchParams(window.location.search);
+        const name = searchParams.get("n");
+        if (name) {
+            this.maneuverName = name;
+        }
+        const levels = searchParams.getAll("l");
+        if (levels) {
+            this.levels = levels;
+        }
+        const requirements = searchParams.getAll("r");
+        if (requirements) {
+            this.requirements = requirements;
+        }
+        const disciplines = searchParams.getAll("d");
+        if (disciplines) {
+            this.disciplines = disciplines;
+        }
+        const types = searchParams.getAll("t");
+        if (types) {
+            this.types = types;
+        }
+
         this.fetchManeuvers()
+    },
+
+    updated: function () {
+        let searchParams = new URLSearchParams();
+
+        if (this.maneuverName) {
+            searchParams.set("n", this.maneuverName);
+        } else {
+            searchParams.delete("n");
+        }
+
+        if (this.levels) {
+            for (let level of this.levels) {
+                searchParams.append("l", level);
+            }
+        } else {
+            searchParams.delete("l");
+        }
+
+        if (this.requirements) {
+            for (let req of this.requirements) {
+                searchParams.append("r", req);
+            }
+        } else {
+            searchParams.delete("r");
+        }
+
+        if (this.disciplines) {
+            for (let dis of this.disciplines) {
+                searchParams.append("d", dis);
+            }
+        } else {
+            searchParams.delete("d");
+        }
+
+        if (this.types) {
+            for (let t of this.types) {
+                searchParams.append("t", t);
+            }
+        } else {
+            searchParams.delete("t");
+        }
+
+        history.replaceState(
+            null, null, searchParams.toString() ? "?" + searchParams.toString() : window.location.pathname
+        )
     },
 
     // --------------
@@ -87,7 +158,7 @@ var app = new Vue({
     // --------------
     methods: {
         fetchManeuvers: function () {
-            var vm = this;
+            let vm = this;
             vm.maneuvers = [];
             vm.fetchError = false;
             fetch('/api/get-all-maneuvers/')
