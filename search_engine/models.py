@@ -2,7 +2,9 @@ from django.db import models
 from django.db.models import Count
 from django.utils.text import slugify
 from markdown import markdown
-from search_engine.Managers import UniqueManeuverManager, ManeuverWithErrataManager
+
+from search_engine.Managers import (ManeuverWithErrataManager,
+                                    UniqueManeuverManager)
 
 
 class Discipline(models.Model):

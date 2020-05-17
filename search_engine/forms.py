@@ -1,6 +1,6 @@
-from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Div, Submit
+from crispy_forms.layout import Div, Field, Layout, Submit
+from django import forms
 
 
 class SearchForm(forms.Form):

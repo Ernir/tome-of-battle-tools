@@ -1,10 +1,12 @@
 import string
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
-from search_engine.forms import SearchForm
-from search_engine.models import Maneuver, Discipline, ManeuverType
-from django.db.models import Avg
+
 from django.conf import settings
+from django.db.models import Avg
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+
+from search_engine.forms import SearchForm
+from search_engine.models import Discipline, Maneuver, ManeuverType
 
 
 def index(request):

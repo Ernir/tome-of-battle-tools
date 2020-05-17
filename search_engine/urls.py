@@ -1,4 +1,5 @@
 from django.conf.urls import url
+
 from search_engine import views
 
 urlpatterns = [

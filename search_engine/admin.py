@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from search_engine import models
 
 admin.site.register(models.ManeuverType)
