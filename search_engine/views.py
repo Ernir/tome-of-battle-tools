@@ -6,6 +6,7 @@ from search_engine.models import Maneuver, Discipline, ManeuverType
 from django.db.models import Avg
 from django.conf import settings
 
+
 def index(request):
     return render(request, "index.html")
 
@@ -14,7 +15,9 @@ def search(request):
     """
     Displays the main search page, to be later filled with data via AJAX.
     """
-    return render(request, "search.html", {"form": SearchForm(), "debug": settings.DEBUG})
+    return render(
+        request, "search.html", {"form": SearchForm(), "debug": settings.DEBUG}
+    )
 
 
 def simple_search(request):
@@ -105,10 +108,15 @@ def maneuver(request, man_slug):
     available_to = the_maneuver.discipline.initiator_classes.all()
     descriptors = the_maneuver.descriptor.all()
 
-    return render(request, "maneuver.html",
-                  {"maneuver": the_maneuver,
-                   "initiator_classes": available_to,
-                   "descriptors": descriptors})
+    return render(
+        request,
+        "maneuver.html",
+        {
+            "maneuver": the_maneuver,
+            "initiator_classes": available_to,
+            "descriptors": descriptors,
+        },
+    )
 
 
 def maneuvers_alphabetical(request):
@@ -129,8 +137,7 @@ def maneuvers_alphabetical(request):
 
     mans = Maneuver.objects.filter(has_errata_elsewhere=False)
     for letter in alphabet:
-        mans_starting_with_letter = mans.filter(
-            name__startswith=letter).all()
+        mans_starting_with_letter = mans.filter(name__startswith=letter).all()
         if len(mans_starting_with_letter) > 0:
             maneuver_bag[letter] = mans_starting_with_letter
         if letter in chunk_breaks:
@@ -144,8 +151,8 @@ def maneuvers_alphabetical(request):
         {
             "maneuver_chunks": chunks,
             "title": "Alphabetical Maneuver Index",
-            "alphabet": alphabet
-        }
+            "alphabet": alphabet,
+        },
     )
 
 
@@ -156,8 +163,7 @@ def maneuvers_by_discipline(request):
     """
     disciplines = Discipline.objects.all()
 
-    return render(request, "maneuvers_by_discipline.html",
-                  {"disciplines": disciplines})
+    return render(request, "maneuvers_by_discipline.html", {"disciplines": disciplines})
 
 
 def maneuvers_by_level(request):
@@ -175,17 +181,13 @@ def maneuvers_by_level(request):
         maneuvers_of_level = Maneuver.unique_objects.filter(level=level)
         sublist = {}
         for discipline in disciplines:
-            sublist[discipline] = maneuvers_of_level.filter(
-                discipline=discipline).all()
+            sublist[discipline] = maneuvers_of_level.filter(discipline=discipline).all()
         maneuvers[level] = sublist
 
     return render(
         request,
         "maneuvers_by_level.html",
-        {
-            "maneuvers": maneuvers,
-            "disciplines": disciplines
-        }
+        {"maneuvers": maneuvers, "disciplines": disciplines},
     )
 
 
@@ -208,32 +210,28 @@ def statistics(request):
 
     # Third item: Statistics on number of maneuvers per discipline.
     ordered_disciplines = Discipline.by_count().all()
-    average_num = round(
-        ordered_disciplines.aggregate(Avg("num_mans"))["num_mans__avg"])
+    average_num = round(ordered_disciplines.aggregate(Avg("num_mans"))["num_mans__avg"])
     largest_discipline = ordered_disciplines[len(ordered_disciplines) - 1]
-    largest_discipline_share = round(
-        largest_discipline.num_mans / all_unique_num * 100)
+    largest_discipline_share = round(largest_discipline.num_mans / all_unique_num * 100)
     smallest_discipline = ordered_disciplines[0]
     smallest_discipline_share = round(
-        smallest_discipline.num_mans / all_unique_num * 100)
+        smallest_discipline.num_mans / all_unique_num * 100
+    )
 
     return render(
         request,
         "stats.html",
         {
             "number": all_unique_num,
-
             "errata_num": errata_num,
             "errata_percent": errata_percent,
-
             "types": type_overview,
-
             "average_num": average_num,
             "largest_discipline": largest_discipline,
             "largest_discipline_share": largest_discipline_share,
             "smallest_discipline": smallest_discipline,
-            "smallest_discipline_share": smallest_discipline_share
-        }
+            "smallest_discipline_share": smallest_discipline_share,
+        },
     )
 
 
@@ -246,10 +244,7 @@ def errata_numbers(request):
     errata_num = Maneuver.maneuvers_with_errata.count()
     errata_free_num = all_num - errata_num * 2
 
-    return_dict = {
-        "errata_num": errata_num,
-        "errata_free_num": errata_free_num
-    }
+    return_dict = {"errata_num": errata_num, "errata_free_num": errata_free_num}
 
     return JsonResponse(return_dict)
 
@@ -273,10 +268,9 @@ def discipline_numbers(request):
 
     discipline_overview = []
     for discipline in disciplines:
-        discipline_overview.insert(0, ({
-            "name": discipline.name,
-            "count": discipline.num_mans
-        }))
+        discipline_overview.insert(
+            0, ({"name": discipline.name, "count": discipline.num_mans})
+        )
 
     return JsonResponse(discipline_overview, safe=False)
 
@@ -294,9 +288,5 @@ def about(request):
     return render(
         request,
         "about.html",
-        {
-            "number": number,
-            "total": total_number,
-            "percent": percent_complete
-        }
+        {"number": number, "total": total_number, "percent": percent_complete},
     )

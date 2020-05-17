@@ -57,7 +57,7 @@ class SearchForm(forms.Form):
             ("Counter", "Counter"),
             ("Stance", "Stance"),
             ("Strike", "Strike"),
-            ("Other", "Other")
+            ("Other", "Other"),
         ),
         widget=forms.CheckboxSelectMultiple,
         required=False,
@@ -69,24 +69,12 @@ class SearchForm(forms.Form):
         Div(
             Field("maneuver_name", placeholder="Exact partial maneuver name."),
             Div(
-                Div(
-                    Field("level"),
-                    css_class="col-md-3"
-                ),
-                Div(
-                    Field("discipline"),
-                    css_class="col-md-3"
-                ),
-                Div(
-                    Field("requirements"),
-                    css_class="col-md-3"
-                ),
-                Div(
-                    Field("type"),
-                    css_class="col-md-3"
-                ),
-                css_class="row"
-            )
+                Div(Field("level"), css_class="col-md-3"),
+                Div(Field("discipline"), css_class="col-md-3"),
+                Div(Field("requirements"), css_class="col-md-3"),
+                Div(Field("type"), css_class="col-md-3"),
+                css_class="row",
+            ),
         )
     )
     helper.add_input(Submit("submit", "Search"))

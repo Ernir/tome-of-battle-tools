@@ -21,5 +21,6 @@ class ManeuverAdmin(admin.ModelAdmin):
 class DisciplineAdmin(admin.ModelAdmin):
     exclude = ("slug",)  # Auto-generated field
 
+
 admin.site.register(models.Maneuver, ManeuverAdmin)
 admin.site.register(models.Discipline, DisciplineAdmin)
