@@ -2,8 +2,8 @@ from django.db import models
 from django.db.models import Count
 from django.utils.text import slugify
 from markdown import markdown
-from search_engine.Managers import UniqueManeuverManager, \
-    ManeuverWithErrataManager
+
+from search_engine.Managers import ManeuverWithErrataManager, UniqueManeuverManager
 
 
 class Discipline(models.Model):
@@ -12,9 +12,11 @@ class Discipline(models.Model):
 
     @classmethod  # TODO make this a manager
     def by_count(cls):
-        return cls.objects.filter(
-            maneuvers__has_errata_elsewhere=False).annotate(
-            num_mans=Count("maneuvers")).order_by("num_mans")
+        return (
+            cls.objects.filter(maneuvers__has_errata_elsewhere=False)
+            .annotate(num_mans=Count("maneuvers"))
+            .order_by("num_mans")
+        )
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -32,12 +34,9 @@ class ManeuverType(models.Model):
         type_names = [man_type.name for man_type in cls.objects.all()]
         type_overview = {}
         for type_name in type_names:
-            type_num = Maneuver.unique_objects.filter(
-                type__name=type_name).count()
-            type_ratio = int(
-                type_num / Maneuver.unique_objects.count() * 100)
-            type_overview[type_name.lower()] = {"num": type_num,
-                                                "percent": type_ratio}
+            type_num = Maneuver.unique_objects.filter(type__name=type_name).count()
+            type_ratio = int(type_num / Maneuver.unique_objects.count() * 100)
+            type_overview[type_name.lower()] = {"num": type_num, "percent": type_ratio}
 
         return type_overview
 
@@ -54,8 +53,7 @@ class Descriptor(models.Model):
 
 class InitiatorClass(models.Model):
     name = models.CharField(max_length=200)
-    disciplines = models.ManyToManyField(Discipline,
-                                         related_name="initiator_classes")
+    disciplines = models.ManyToManyField(Discipline, related_name="initiator_classes")
 
     def __str__(self):
         return self.name
@@ -115,8 +113,12 @@ class SavingThrow(models.Model):
 class Maneuver(models.Model):
     name = models.CharField(max_length=200)
 
-    discipline = models.ForeignKey(Discipline, related_name="maneuvers", on_delete=models.PROTECT)
-    type = models.ForeignKey(ManeuverType, related_name="maneuvers", on_delete=models.PROTECT)
+    discipline = models.ForeignKey(
+        Discipline, related_name="maneuvers", on_delete=models.PROTECT
+    )
+    type = models.ForeignKey(
+        ManeuverType, related_name="maneuvers", on_delete=models.PROTECT
+    )
     descriptor = models.ManyToManyField(Descriptor, blank=True)
 
     level = models.IntegerField()
@@ -131,9 +133,13 @@ class Maneuver(models.Model):
     area = models.ForeignKey(Area, blank=True, null=True, on_delete=models.PROTECT)
     effect = models.ForeignKey(Effect, blank=True, null=True, on_delete=models.PROTECT)
 
-    duration = models.ForeignKey(Duration, blank=True, null=True, on_delete=models.PROTECT)
+    duration = models.ForeignKey(
+        Duration, blank=True, null=True, on_delete=models.PROTECT
+    )
 
-    saving_throw = models.ForeignKey(SavingThrow, blank=True, null=True, on_delete=models.PROTECT)
+    saving_throw = models.ForeignKey(
+        SavingThrow, blank=True, null=True, on_delete=models.PROTECT
+    )
 
     descriptive_text = models.TextField()  # Markdown-formatted maneuver main text
 
@@ -141,17 +147,19 @@ class Maneuver(models.Model):
     html_description = models.TextField()
     page = models.IntegerField()
 
-    alternate_version = models.ForeignKey("self", blank=True, null=True, on_delete=models.PROTECT)
+    alternate_version = models.ForeignKey(
+        "self", blank=True, null=True, on_delete=models.PROTECT
+    )
     has_errata_elsewhere = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         self.descriptive_text = self.descriptive_text.replace("’", "'")
         self.descriptive_text = self.descriptive_text.strip()
-        self.html_description = markdown(self.descriptive_text,
-                                         extensions=["tables"])
-        self.html_description = self.html_description.replace("<table>",
-                                                              "<table class='table'>")
+        self.html_description = markdown(self.descriptive_text, extensions=["tables"])
+        self.html_description = self.html_description.replace(
+            "<table>", "<table class='table'>"
+        )
         super(Maneuver, self).save(*args, **kwargs)
 
     def serialize_to_dict(self, long_form=False):
@@ -162,7 +170,7 @@ class Maneuver(models.Model):
             "discipline": self.discipline.name,
             "requirements": self.requirements,
             "type": self.type.name,
-            "slug": self.slug
+            "slug": self.slug,
         }
 
         if long_form:

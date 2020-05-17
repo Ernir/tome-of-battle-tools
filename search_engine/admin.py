@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from search_engine import models
 
 admin.site.register(models.ManeuverType)
@@ -20,6 +21,7 @@ class ManeuverAdmin(admin.ModelAdmin):
 
 class DisciplineAdmin(admin.ModelAdmin):
     exclude = ("slug",)  # Auto-generated field
+
 
 admin.site.register(models.Maneuver, ManeuverAdmin)
 admin.site.register(models.Discipline, DisciplineAdmin)
