@@ -115,25 +115,25 @@ class SavingThrow(models.Model):
 class Maneuver(models.Model):
     name = models.CharField(max_length=200)
 
-    discipline = models.ForeignKey(Discipline, related_name="maneuvers")
-    type = models.ForeignKey(ManeuverType, related_name="maneuvers")
+    discipline = models.ForeignKey(Discipline, related_name="maneuvers", on_delete=models.PROTECT)
+    type = models.ForeignKey(ManeuverType, related_name="maneuvers", on_delete=models.PROTECT)
     descriptor = models.ManyToManyField(Descriptor, blank=True)
 
     level = models.IntegerField()
 
     requirements = models.IntegerField(default=0)
 
-    action = models.ForeignKey(Action)
+    action = models.ForeignKey(Action, on_delete=models.PROTECT)
 
-    range = models.ForeignKey(Range)
+    range = models.ForeignKey(Range, on_delete=models.PROTECT)
 
-    target = models.ForeignKey(Target, blank=True, null=True)
-    area = models.ForeignKey(Area, blank=True, null=True)
-    effect = models.ForeignKey(Effect, blank=True, null=True)
+    target = models.ForeignKey(Target, blank=True, null=True, on_delete=models.PROTECT)
+    area = models.ForeignKey(Area, blank=True, null=True, on_delete=models.PROTECT)
+    effect = models.ForeignKey(Effect, blank=True, null=True, on_delete=models.PROTECT)
 
-    duration = models.ForeignKey(Duration, blank=True, null=True)
+    duration = models.ForeignKey(Duration, blank=True, null=True, on_delete=models.PROTECT)
 
-    saving_throw = models.ForeignKey(SavingThrow, blank=True, null=True)
+    saving_throw = models.ForeignKey(SavingThrow, blank=True, null=True, on_delete=models.PROTECT)
 
     descriptive_text = models.TextField()  # Markdown-formatted maneuver main text
 
@@ -141,7 +141,7 @@ class Maneuver(models.Model):
     html_description = models.TextField()
     page = models.IntegerField()
 
-    alternate_version = models.ForeignKey("self", blank=True, null=True)
+    alternate_version = models.ForeignKey("self", blank=True, null=True, on_delete=models.PROTECT)
     has_errata_elsewhere = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
