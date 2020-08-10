@@ -1,0 +1,94 @@
+schema {
+  query: Query
+}
+
+type ActionType {
+  id: ID!
+  name: String!
+  maneuverSet: [ManeuverType!]!
+}
+
+type AreaType {
+  id: ID!
+  description: String!
+  maneuverSet: [ManeuverType!]!
+}
+
+type DescriptorType {
+  id: ID!
+  name: String!
+  maneuverSet: [ManeuverType!]!
+}
+
+type DisciplineType {
+  id: ID!
+  name: String!
+  slug: String!
+  initiatorClasses: [InitiatorClassType!]!
+  maneuvers: [ManeuverType!]!
+}
+
+type DurationType {
+  id: ID!
+  description: String!
+  isTimed: Boolean!
+  maneuverSet: [ManeuverType!]!
+}
+
+type EffectType {
+  id: ID!
+  description: String!
+  maneuverSet: [ManeuverType!]!
+}
+
+type InitiatorClassType {
+  id: ID!
+  name: String!
+  disciplines: [DisciplineType!]!
+}
+
+type ManeuverType {
+  id: ID!
+  name: String!
+  discipline: DisciplineType!
+  descriptor: [DescriptorType!]!
+  level: Int!
+  requirements: Int!
+  action: ActionType!
+  range: RangeType!
+  target: TargetType
+  area: AreaType
+  effect: EffectType
+  duration: DurationType
+  savingThrow: SavingThrowType
+  descriptiveText: String!
+  slug: String!
+  htmlDescription: String!
+  page: Int!
+  alternateVersion: ManeuverType
+  hasErrataElsewhere: Boolean!
+  maneuverSet: [ManeuverType!]!
+}
+
+type Query {
+  allManeuvers: [ManeuverType]
+}
+
+type RangeType {
+  id: ID!
+  name: String!
+  isNumeric: Boolean!
+  maneuverSet: [ManeuverType!]!
+}
+
+type SavingThrowType {
+  id: ID!
+  description: String!
+  maneuverSet: [ManeuverType!]!
+}
+
+type TargetType {
+  id: ID!
+  description: String!
+  maneuverSet: [ManeuverType!]!
+}
