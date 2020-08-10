@@ -26,9 +26,12 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     "search_engine",
     "crispy_forms",
+    "graphene_django",
 )
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"
+
+GRAPHENE = {"SCHEMA": "schema.schema"}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
