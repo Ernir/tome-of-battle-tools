@@ -7,8 +7,14 @@ from search_engine.Managers import ManeuverWithErrataManager, UniqueManeuverMana
 
 
 class Discipline(models.Model):
+    """
+    One of the nine disciplines described in the Tome of Battle - Book of Nine Swords.
+    """
+
     name = models.CharField(max_length=200)
-    slug = models.SlugField()
+    slug = models.SlugField(
+        unique=True, help_text="The URL fragment uniquely identifying the discipline."
+    )
 
     @classmethod  # TODO make this a manager
     def by_count(cls):
@@ -27,6 +33,10 @@ class Discipline(models.Model):
 
 
 class ManeuverType(models.Model):
+    """
+    A type of maneuver defined in the Tome of Battle, which affects how it interacts with some class features.
+    """
+
     name = models.CharField(max_length=200)
 
     @classmethod
@@ -45,6 +55,11 @@ class ManeuverType(models.Model):
 
 
 class Descriptor(models.Model):
+    """
+    A maneuver descriptor, supplying meta-information about a maneuver. In the book, this is denoted by brackets, e.g.
+    [fire].
+    """
+
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -52,6 +67,10 @@ class Descriptor(models.Model):
 
 
 class InitiatorClass(models.Model):
+    """
+    An initiator character class, which has access to one or more disciplines.
+    """
+
     name = models.CharField(max_length=200)
     disciplines = models.ManyToManyField(Discipline, related_name="initiator_classes")
 
@@ -60,6 +79,10 @@ class InitiatorClass(models.Model):
 
 
 class Action(models.Model):
+    """
+    A D&D action type, defining the "time" it takes to use a maneuver.
+    """
+
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -67,14 +90,25 @@ class Action(models.Model):
 
 
 class Range(models.Model):
+    """
+    The range at which a maneuver can be used. Can be a number of feet, or a definition such as "melee".
+    """
+
     name = models.CharField(max_length=200)
-    is_numeric = models.BooleanField(default=False)
+    is_numeric = models.BooleanField(
+        default=False,
+        help_text="Whether the range can be feasibly interpreted as a number.",
+    )
 
     def __str__(self):
         return self.name
 
 
 class Target(models.Model):
+    """
+    Describes a valid target for a maneuver.
+    """
+
     description = models.CharField(max_length=200)
 
     def __str__(self):
@@ -82,6 +116,10 @@ class Target(models.Model):
 
 
 class Area(models.Model):
+    """
+    The area a maneuver affects, which tends to indicate the maneuver does not have a single :class:`Target`.
+    """
+
     description = models.CharField(max_length=200)
 
     def __str__(self):
@@ -89,6 +127,10 @@ class Area(models.Model):
 
 
 class Effect(models.Model):
+    """
+    The effect produced by a maneuver. Most maneuvers do not produce effects, they have a :class:`Target`.
+    """
+
     description = models.CharField(max_length=200)
 
     def __str__(self):
@@ -96,14 +138,26 @@ class Effect(models.Model):
 
 
 class Duration(models.Model):
+    """
+    A description of how long the maneuver lasts. Can be "instantaneous" or reference other rules, such as those which
+    last as stances do, or be expressed in terms of rounds.
+    """
+
     description = models.CharField(max_length=200)
-    is_timed = models.BooleanField(default=False)
+    is_timed = models.BooleanField(
+        default=False,
+        help_text="Whether the duration can be interpreted as a time range.",
+    )
 
     def __str__(self):
         return self.description
 
 
 class SavingThrow(models.Model):
+    """
+    A saving throw allowed by a maneuver. Most maneuvers do not allow saving throws, simply dealing damage on a hit.
+    """
+
     description = models.CharField(max_length=200)
 
     def __str__(self):
@@ -111,6 +165,10 @@ class SavingThrow(models.Model):
 
 
 class Maneuver(models.Model):
+    """
+    The core entity of the search engine, the one actually being searched for. Ties together all other game concepts.
+    """
+
     name = models.CharField(max_length=200)
 
     discipline = models.ForeignKey(
@@ -143,7 +201,7 @@ class Maneuver(models.Model):
 
     descriptive_text = models.TextField()  # Markdown-formatted maneuver main text
 
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     html_description = models.TextField()
     page = models.IntegerField()
 
