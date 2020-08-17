@@ -130,7 +130,7 @@ class Query(graphene.ObjectType):
     all_maneuvers = graphene.List(ManeuverType)
 
     def resolve_all_maneuvers(root, info):
-        return Maneuver.objects.all()
+        return Maneuver.objects.prefetch_related("duration").all()
 
 
 schema = graphene.Schema(query=Query)
