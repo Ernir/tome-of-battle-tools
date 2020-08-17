@@ -15,6 +15,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default="Not secret")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get("DEBUG_MODE", default=1))
 
+INTERNAL_IPS = ["127.0.0.1"]
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -27,6 +29,8 @@ INSTALLED_APPS = (
     "search_engine",
     "crispy_forms",
     "graphene_django",
+    "debug_toolbar",
+    "graphiql_debug_toolbar",
 )
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"
@@ -41,6 +45,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "graphiql_debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 TEMPLATES = [
