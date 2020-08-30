@@ -2,10 +2,13 @@
 
 db.sqlite3
 venv/
-.idea/
 staticfiles/
 *.dump
 .env
+
+# IDE
+.idea/
+*.iml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
