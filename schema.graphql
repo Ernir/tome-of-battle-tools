@@ -51,6 +51,7 @@ type ManeuverType {
   id: ID!
   name: String!
   discipline: DisciplineType!
+  maneuverType: ManeuverTypeType!
   descriptor: [DescriptorType!]!
   level: Int!
   requirements: Int!
@@ -68,6 +69,12 @@ type ManeuverType {
   alternateVersion: ManeuverType
   hasErrataElsewhere: Boolean!
   maneuverSet: [ManeuverType!]!
+}
+
+type ManeuverTypeType {
+  id: ID!
+  name: String!
+  maneuvers: [ManeuverType!]!
 }
 
 type Query {
