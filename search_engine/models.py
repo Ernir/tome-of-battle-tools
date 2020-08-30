@@ -8,7 +8,9 @@ from search_engine.Managers import ManeuverWithErrataManager, UniqueManeuverMana
 
 class Discipline(models.Model):
     name = models.CharField(max_length=200)
-    slug = models.SlugField()
+    slug = models.SlugField(
+        unique=True, help_text="The URL fragment uniquely identifying the discipline."
+    )
 
     @classmethod  # TODO make this a manager
     def by_count(cls):
@@ -68,7 +70,10 @@ class Action(models.Model):
 
 class Range(models.Model):
     name = models.CharField(max_length=200)
-    is_numeric = models.BooleanField(default=False)
+    is_numeric = models.BooleanField(
+        default=False,
+        help_text="Whether the range can be feasibly interpreted as a number.",
+    )
 
     def __str__(self):
         return self.name
@@ -97,7 +102,10 @@ class Effect(models.Model):
 
 class Duration(models.Model):
     description = models.CharField(max_length=200)
-    is_timed = models.BooleanField(default=False)
+    is_timed = models.BooleanField(
+        default=False,
+        help_text="Whether the duration can be interpreted as a time range.",
+    )
 
     def __str__(self):
         return self.description
@@ -116,7 +124,7 @@ class Maneuver(models.Model):
     discipline = models.ForeignKey(
         Discipline, related_name="maneuvers", on_delete=models.PROTECT
     )
-    type = models.ForeignKey(
+    maneuver_type = models.ForeignKey(
         ManeuverType, related_name="maneuvers", on_delete=models.PROTECT
     )
     descriptor = models.ManyToManyField(Descriptor, blank=True)
@@ -143,7 +151,7 @@ class Maneuver(models.Model):
 
     descriptive_text = models.TextField()  # Markdown-formatted maneuver main text
 
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     html_description = models.TextField()
     page = models.IntegerField()
 
@@ -169,7 +177,7 @@ class Maneuver(models.Model):
             "level": self.level,
             "discipline": self.discipline.name,
             "requirements": self.requirements,
-            "type": self.type.name,
+            "type": self.maneuver_type.name,
             "slug": self.slug,
         }
 
