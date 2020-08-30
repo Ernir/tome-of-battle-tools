@@ -124,7 +124,7 @@ class Maneuver(models.Model):
     discipline = models.ForeignKey(
         Discipline, related_name="maneuvers", on_delete=models.PROTECT
     )
-    type = models.ForeignKey(
+    maneuver_type = models.ForeignKey(
         ManeuverType, related_name="maneuvers", on_delete=models.PROTECT
     )
     descriptor = models.ManyToManyField(Descriptor, blank=True)
@@ -177,7 +177,7 @@ class Maneuver(models.Model):
             "level": self.level,
             "discipline": self.discipline.name,
             "requirements": self.requirements,
-            "type": self.type.name,
+            "type": self.maneuver_type.name,
             "slug": self.slug,
         }
 

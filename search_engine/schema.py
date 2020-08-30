@@ -31,7 +31,9 @@ class ManeuverTypeType(DjangoObjectType):
     """
 
     class Meta:
-        model = Maneuver
+        from search_engine.models import ManeuverType
+
+        model = ManeuverType
 
 
 class DescriptorType(DjangoObjectType):
@@ -130,7 +132,21 @@ class Query(graphene.ObjectType):
     all_maneuvers = graphene.List(ManeuverType)
 
     def resolve_all_maneuvers(root, info):
-        return Maneuver.objects.prefetch_related("duration").all()
+        return (
+            Maneuver.objects.select_related(
+                "discipline",
+                "maneuver_type",
+                "action",
+                "range",
+                "target",
+                "area",
+                "effect",
+                "duration",
+                "alternate_version",
+            )
+            .prefetch_related("descriptor")
+            .all()
+        )
 
 
 schema = graphene.Schema(query=Query)

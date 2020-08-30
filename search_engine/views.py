@@ -47,7 +47,7 @@ def simple_search(request):
                 ml = ml.filter(requirements__in=form.cleaned_data["requirements"])
             if form.cleaned_data["type"]:
                 ml.select_related("type")
-                ml = ml.filter(type__name__in=form.cleaned_data["type"])
+                ml = ml.filter(maneuver_type__name__in=form.cleaned_data["type"])
     else:
         form = SearchForm()
 
