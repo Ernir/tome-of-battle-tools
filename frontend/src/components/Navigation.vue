@@ -10,6 +10,14 @@
             <v-list-item-title>Search</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/links">
+          <v-list-item-action>
+            <v-icon>mdi-link</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Links</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item link to="/about">
           <v-list-item-action>
             <v-icon>mdi-information</v-icon>

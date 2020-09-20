@@ -1,5 +1,106 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div id="about">
+    <v-card>
+      <v-card-title>About This Site</v-card-title>
+      <v-card-text>
+        <h3>Purpose and Scope</h3>
+        <p>
+          This site contains and presents data from the
+          <em>Tome of Battle: the Book of Nine Swords</em>, intended to
+          supplement access to the physical book.
+        </p>
+        <p>
+          Previously, the information has been made publicly available by
+          <em>Wizards of the Coast</em> only in the form of maneuver cards
+          (<router-link to="/links">see links</router-link>), this site provides
+          indexes and filtering options for the information they contain.
+        </p>
+
+        <h3 id="changes">Changes from the Text of the Book</h3>
+
+        <p>
+          The maneuver texts include all relevant modifications recommended by
+          the <i>Unofficial Errata Project</i> for the Tome of Battle
+          (<router-link to="/links">see links</router-link>).
+        </p>
+
+        <h3>Webmaster</h3>
+        <p>
+          This site is created and run by
+          <a href="mailto:e.ernir@gmail.com?subject=Regarding tob-tools.net"
+            >Eiríkur Ernir Þorsteinsson</a
+          >.
+        </p>
+
+        <p>
+          I started playing Dunegons and Dragons 3.5 about a week before the
+          game's fourth edition came out. I bought the Tome of Battle on April
+          12, 2009. Of all the books I own, it is the one that has suffered the
+          greatest number of sticky notes.
+        </p>
+        <h4>Thanks</h4>
+        <p>
+          Lady Sæborg Ninja and Ormur performed valuable content work. Raise
+          your weapons of legacy to them.
+        </p>
+
+        <h3>Programming API</h3>
+
+        <p>
+          The website includes an open <a href="/graphql">GraphQL API</a> for
+          developers.
+        </p>
+        <p>
+          Do be in touch or
+          <a href="https://github.com/Ernir/tome-of-battle-tools"
+            >submit a PR directly</a
+          >
+          if additional queries are desired.
+        </p>
+
+        <h3 id="legal">Legal Stuff</h3>
+
+        <p>
+          <em>Tome of Battle: the Book of Nine Swords</em> is a trademark of
+          Wizards of the Coast, Inc.. Further, the book is protected under the
+          copyright laws of the United States of America.
+        </p>
+
+        <p>
+          However, I (the author of this website) believe the construction of a
+          search engine such as this one falls under the
+          <a href="http://en.wikipedia.org/wiki/Fair_use">fair use exception</a>
+          of copyright law. The site is not run for profit, it only uses content
+          that is available online (<router-link to="/links"
+            >see links</router-link
+          >), and is very unlikely to impact the copyright holder's ability to
+          profit from the book. The product line the book belongs to has been
+          discontinued and the whole site is rather useless to someone who does
+          not own the book anyway.
+        </p>
+
+        <p>
+          If you are a representative of the copyright holder and find that the
+          existence of the site is somehow not in your interest, drop me a line
+          and I'll take down the offending material.
+        </p>
+
+        <h4 id="license">GNU General Public License</h4>
+        <p>
+          This website is an open source program, released under the
+          <em>GNU General Public License, version 3</em> (GPL-3.0). The source
+          is accessible at
+          <a href="https://github.com/Ernir/tome-of-battle-tools">Github.</a>
+        </p>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
+
+<script>
+import Vue from "vue";
+import Component from "vue-class-component";
+
+@Component
+export default class About extends Vue {}
+</script>
