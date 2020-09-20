@@ -14,7 +14,7 @@
             </div>
           </div>
           <v-list dense>
-            <v-list-item-group v-model="item">
+            <v-list-item-group>
               <v-list-item v-for="maneuver in allManeuvers" :key="maneuver.id">
                 <ManeuverListItem :maneuver="maneuver" />
               </v-list-item>

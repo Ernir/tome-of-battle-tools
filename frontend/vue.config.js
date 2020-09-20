@@ -1,4 +1,9 @@
 module.exports = {
   assetsDir: "static",
-  transpileDependencies: ["vuetify"]
+  transpileDependencies: ["vuetify"],
+  pluginOptions: {
+    apollo: {
+      lintGQL: true
+    }
+  }
 };
