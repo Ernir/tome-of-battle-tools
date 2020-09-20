@@ -1,5 +1,6 @@
 <template>
   <v-app id="tob-tools">
+    <Navigation />
     <v-main>
       <router-view />
     </v-main>
@@ -10,11 +11,12 @@
 <script lang="ts">
 import Vue from "vue";
 import Footer from "@/components/Footer.vue";
+import Navigation from "@/components/Navigation.vue";
 
 export default Vue.extend({
   name: "App",
 
-  components: { Footer },
+  components: { Navigation, Footer },
 
   data: () => ({
     //
