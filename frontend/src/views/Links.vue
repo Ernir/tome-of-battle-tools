@@ -11,15 +11,15 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
 
 class LinkDefinition {
-  target;
-  description;
+  target: string;
+  description: string;
 
-  constructor(target, description) {
+  constructor(target: string, description: string) {
     this.target = target;
     this.description = description;
   }
