@@ -8,8 +8,36 @@
             :filter="nameFilter"
             item-text="name"
             label="Name"
-            v-model="maneuverSearchName"
+            v-model="searchManeuverName"
           ></v-autocomplete>
+          <v-select
+            v-model="searchLevels"
+            :items="levels"
+            chips
+            label="Level"
+            multiple
+          ></v-select>
+          <v-select
+            v-model="searchDisciplines"
+            :items="disciplines"
+            chips
+            label="Disciplines"
+            multiple
+          ></v-select>
+          <v-select
+            v-model="searchRequirements"
+            :items="requirements"
+            chips
+            label="Requirements"
+            multiple
+          ></v-select>
+          <v-select
+            v-model="searchManeuverTypes"
+            :items="maneuverTypes"
+            chips
+            label="Type"
+            multiple
+          ></v-select>
         </v-card>
       </v-col>
       <v-col cols="12" sm="4">
@@ -62,6 +90,7 @@ export default Vue.component("Search", {
           }
           level
           requirements
+          slug
         }
       }
     `
@@ -71,18 +100,62 @@ export default Vue.component("Search", {
     maneuversFiltered: function() {
       const filtered = [];
       for (const maneuver of [...this.allManeuvers]) {
-        const nameMatch = this.nameFilter(maneuver, this.maneuverSearchName);
+        const nameMatch = this.nameFilter(maneuver, this.searchManeuverName);
         if (nameMatch) {
           filtered.push(maneuver);
         }
       }
       return filtered;
+    },
+
+    levels: function() {
+      const levels = [];
+      for (const { level } of [...this.allManeuvers]) {
+        levels.push(level);
+      }
+      return Array.from(new Set(levels)).sort();
+    },
+
+    disciplines: function() {
+      const disciplines = new Set();
+      for (const { discipline } of [...this.allManeuvers]) {
+        disciplines.add(discipline.name);
+      }
+      return Array.from(new Set(disciplines)).sort();
+    },
+
+    requirements: function() {
+      const requirementsArray = [];
+      for (const { requirements } of [...this.allManeuvers]) {
+        requirementsArray.push(requirements);
+      }
+      return Array.from(new Set(requirementsArray)).sort();
+    },
+
+    maneuverTypes: function() {
+      const maneuverTypes = new Set();
+      for (const { maneuverType } of [...this.allManeuvers]) {
+        maneuverTypes.add(maneuverType.name);
+      }
+      return Array.from(new Set(maneuverTypes)).sort();
     }
   },
 
-  data: function() {
+  data: function(): {
+    searchManeuverName: string;
+    searchLevels: number[];
+    searchDisciplines: string[];
+    searchRequirements: number[];
+    searchManeuverTypes: string[];
+    allManeuvers: any[];
+  } {
     return {
-      maneuverSearchName: "",
+      searchManeuverName: "",
+      searchLevels: [],
+      searchDisciplines: [],
+      searchRequirements: [],
+      searchManeuverTypes: [],
+
       allManeuvers: []
     };
   },
