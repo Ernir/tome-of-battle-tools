@@ -98,16 +98,20 @@ export default Vue.component("Search", {
   },
 
   computed: {
-    maneuversFiltered: function() {
-      const filtered = [];
+    maneuversFiltered: function(): ManeuverType[] {
       const maneuvers: ManeuverType[] = [...this.allManeuvers];
-      for (const maneuver of maneuvers) {
-        const nameMatch = this.nameFilter(maneuver, this.searchManeuverName);
-        if (nameMatch) {
-          filtered.push(maneuver);
-        }
-      }
-      return filtered;
+      return maneuvers.filter(
+        maneuver =>
+          this.nameFilter(maneuver, this.searchManeuverName) &&
+          (this.searchRequirements.length === 0 ||
+            this.searchRequirements.includes(maneuver.requirements)) &&
+          (this.searchLevels.length === 0 ||
+            this.searchLevels.includes(maneuver.level)) &&
+          (this.searchDisciplines.length === 0 ||
+            this.searchDisciplines.includes(maneuver.discipline.name)) &&
+          (this.searchManeuverTypes.length === 0 ||
+            this.searchManeuverTypes.includes(maneuver.maneuverType.name))
+      );
     },
 
     levels: function(): number[] {
@@ -153,7 +157,7 @@ export default Vue.component("Search", {
   },
 
   methods: {
-    nameFilter(maneuver: { name: string }, queryText: string) {
+    nameFilter(maneuver: ManeuverType, queryText: string) {
       const maneuverName = maneuver.name.toLowerCase();
       const comparisonText = queryText ? queryText.toLowerCase() : "";
       return maneuverName.indexOf(comparisonText) > -1;
