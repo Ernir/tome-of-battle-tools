@@ -72,6 +72,7 @@
 import Vue from "vue";
 import gql from "graphql-tag";
 import ManeuverListItem from "@/views/ManeuverListItem.vue";
+import { ManeuverType } from "@/types";
 
 export default Vue.component("Search", {
   components: { ManeuverListItem },
@@ -99,7 +100,8 @@ export default Vue.component("Search", {
   computed: {
     maneuversFiltered: function() {
       const filtered = [];
-      for (const maneuver of [...this.allManeuvers]) {
+      const maneuvers: ManeuverType[] = [...this.allManeuvers];
+      for (const maneuver of maneuvers) {
         const nameMatch = this.nameFilter(maneuver, this.searchManeuverName);
         if (nameMatch) {
           filtered.push(maneuver);
@@ -110,7 +112,8 @@ export default Vue.component("Search", {
 
     levels: function() {
       const levels = [];
-      for (const { level } of [...this.allManeuvers]) {
+      const maneuvers: ManeuverType[] = [...this.allManeuvers];
+      for (const { level } of maneuvers) {
         levels.push(level);
       }
       return Array.from(new Set(levels)).sort();
@@ -118,7 +121,8 @@ export default Vue.component("Search", {
 
     disciplines: function() {
       const disciplines = new Set();
-      for (const { discipline } of [...this.allManeuvers]) {
+      const maneuvers: ManeuverType[] = [...this.allManeuvers];
+      for (const { discipline } of maneuvers) {
         disciplines.add(discipline.name);
       }
       return Array.from(new Set(disciplines)).sort();
@@ -126,7 +130,8 @@ export default Vue.component("Search", {
 
     requirements: function() {
       const requirementsArray = [];
-      for (const { requirements } of [...this.allManeuvers]) {
+      const maneuvers: ManeuverType[] = [...this.allManeuvers];
+      for (const { requirements } of maneuvers) {
         requirementsArray.push(requirements);
       }
       return Array.from(new Set(requirementsArray)).sort();
@@ -147,7 +152,7 @@ export default Vue.component("Search", {
     searchDisciplines: string[];
     searchRequirements: number[];
     searchManeuverTypes: string[];
-    allManeuvers: any[];
+    allManeuvers: ManeuverType[];
   } {
     return {
       searchManeuverName: "",
