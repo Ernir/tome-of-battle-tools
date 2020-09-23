@@ -110,39 +110,26 @@ export default Vue.component("Search", {
       return filtered;
     },
 
-    levels: function() {
-      const levels = [];
+    levels: function(): number[] {
       const maneuvers: ManeuverType[] = [...this.allManeuvers];
-      for (const { level } of maneuvers) {
-        levels.push(level);
-      }
-      return Array.from(new Set(levels)).sort();
+      return [...new Set(maneuvers.map(({ level }) => level))].sort();
     },
 
-    disciplines: function() {
-      const disciplines = new Set();
+    disciplines: function(): string[] {
       const maneuvers: ManeuverType[] = [...this.allManeuvers];
-      for (const { discipline } of maneuvers) {
-        disciplines.add(discipline.name);
-      }
-      return Array.from(new Set(disciplines)).sort();
+      return [...new Set(maneuvers.map(m => m.discipline.name))].sort();
     },
 
-    requirements: function() {
-      const requirementsArray = [];
+    requirements: function(): number[] {
       const maneuvers: ManeuverType[] = [...this.allManeuvers];
-      for (const { requirements } of maneuvers) {
-        requirementsArray.push(requirements);
-      }
-      return Array.from(new Set(requirementsArray)).sort();
+      return [
+        ...new Set(maneuvers.map(({ requirements }) => requirements))
+      ].sort();
     },
 
-    maneuverTypes: function() {
-      const maneuverTypes = new Set();
-      for (const { maneuverType } of [...this.allManeuvers]) {
-        maneuverTypes.add(maneuverType.name);
-      }
-      return Array.from(new Set(maneuverTypes)).sort();
+    maneuverTypes: function(): string[] {
+      const maneuvers: ManeuverType[] = [...this.allManeuvers];
+      return [...new Set(maneuvers.map(m => m.maneuverType.name))].sort();
     }
   },
 
