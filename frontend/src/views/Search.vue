@@ -114,30 +114,30 @@ export default Vue.component("Search", {
       );
     },
 
-    levels: function(): number[] {
+    levels(): number[] {
       const maneuvers: ManeuverType[] = [...this.allManeuvers];
       return [...new Set(maneuvers.map(({ level }) => level))].sort();
     },
 
-    disciplines: function(): string[] {
+    disciplines(): string[] {
       const maneuvers: ManeuverType[] = [...this.allManeuvers];
       return [...new Set(maneuvers.map(m => m.discipline.name))].sort();
     },
 
-    requirements: function(): number[] {
+    requirements(): number[] {
       const maneuvers: ManeuverType[] = [...this.allManeuvers];
       return [
         ...new Set(maneuvers.map(({ requirements }) => requirements))
       ].sort();
     },
 
-    maneuverTypes: function(): string[] {
+    maneuverTypes(): string[] {
       const maneuvers: ManeuverType[] = [...this.allManeuvers];
       return [...new Set(maneuvers.map(m => m.maneuverType.name))].sort();
     }
   },
 
-  data: function(): {
+  data(): {
     searchManeuverName: string;
     searchLevels: number[];
     searchDisciplines: string[];
@@ -157,11 +157,45 @@ export default Vue.component("Search", {
   },
 
   methods: {
-    nameFilter(maneuver: ManeuverType, queryText: string) {
+    nameFilter(maneuver: ManeuverType, queryText: string): boolean {
       const maneuverName = maneuver.name.toLowerCase();
       const comparisonText = queryText ? queryText.toLowerCase() : "";
       return maneuverName.indexOf(comparisonText) > -1;
     }
+  },
+
+  updated() {
+    const nameParam = "n";
+    const levelsParam = "l";
+    const disciplinesParam = "d";
+    const requirementsParam = "r";
+    const maneuverTypesParam = "t";
+    // TODO check whether this type definition can be parameterized
+    const query: {
+      n?: string;
+      l?: string[];
+      d?: string[];
+      r?: string[];
+      t?: string[];
+    } = {};
+    if (this.searchManeuverName) {
+      query[nameParam] = encodeURIComponent(this.searchManeuverName);
+    }
+    if (this.searchLevels) {
+      query[levelsParam] = this.searchLevels.map(level => level.toString());
+    }
+    if (this.searchDisciplines) {
+      query[disciplinesParam] = this.searchDisciplines.map(d =>
+        encodeURIComponent(d)
+      );
+    }
+    if (this.searchRequirements) {
+      query[requirementsParam] = this.searchRequirements.map(r => r.toString());
+    }
+    if (this.searchManeuverTypes) {
+      query[maneuverTypesParam] = this.searchManeuverTypes;
+    }
+    this.$router.push({ query: query });
   }
 });
 </script>
