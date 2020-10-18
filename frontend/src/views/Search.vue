@@ -181,17 +181,11 @@ export default Vue.component("Search", {
     if (this.searchManeuverName) {
       query[nameParam] = encodeURIComponent(this.searchManeuverName);
     }
-    if (this.searchLevels) {
-      query[levelsParam] = this.searchLevels.map(level => level.toString());
-    }
-    if (this.searchDisciplines) {
-      query[disciplinesParam] = this.searchDisciplines.map(d =>
-        encodeURIComponent(d)
-      );
-    }
-    if (this.searchRequirements) {
-      query[requirementsParam] = this.searchRequirements.map(r => r.toString());
-    }
+    query[levelsParam] = this.searchLevels?.map(level => level.toString());
+    query[disciplinesParam] = this.searchDisciplines?.map(d =>
+      encodeURIComponent(d)
+    );
+    query[requirementsParam] = this.searchRequirements?.map(r => r.toString());
     if (this.searchManeuverTypes) {
       query[maneuverTypesParam] = this.searchManeuverTypes;
     }
