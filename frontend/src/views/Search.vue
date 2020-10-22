@@ -73,6 +73,13 @@ import Vue from "vue";
 import gql from "graphql-tag";
 import ManeuverListItem from "@/views/ManeuverListItem.vue";
 import { ManeuverType } from "@/types";
+import { Dictionary } from "vue-router/types/router";
+
+const nameParam = "n";
+const levelsParam = "l";
+const disciplinesParam = "d";
+const requirementsParam = "r";
+const maneuverTypesParam = "t";
 
 export default Vue.component("Search", {
   components: { ManeuverListItem },
@@ -161,23 +168,63 @@ export default Vue.component("Search", {
       const maneuverName = maneuver.name.toLowerCase();
       const comparisonText = queryText ? queryText.toLowerCase() : "";
       return maneuverName.indexOf(comparisonText) > -1;
+    },
+    /**
+     * Extracts a Vue router query parameter to a target array.
+     *
+     * @param queryParam a query parameter from this.$route.query, potentially multiple, represented as an array
+     * @param target an array to populate
+     * @param mapper mapping function to transform each query parameter
+     */
+    extractParams<T>(
+      queryParam: string | (string | null)[],
+      target: T[],
+      mapper: (arg: string) => T
+    ) {
+      if (Array.isArray(queryParam)) {
+        queryParam.forEach(l => {
+          if (l != null) {
+            target.push(mapper(l));
+          }
+        });
+      } else {
+        if (queryParam != null) {
+          target.push(mapper(queryParam));
+        }
+      }
     }
   },
 
+  created() {
+    const nameQuery = this.$route.query[nameParam];
+    if (nameQuery && !Array.isArray(nameQuery)) {
+      this.searchManeuverName = decodeURIComponent(nameQuery);
+    }
+    this.extractParams(
+      this.$route.query[levelsParam],
+      this.searchLevels,
+      parseInt
+    );
+    this.extractParams(
+      this.$route.query[disciplinesParam],
+      this.searchDisciplines,
+      decodeURIComponent
+    );
+    this.extractParams(
+      this.$route.query[requirementsParam],
+      this.searchRequirements,
+      parseInt
+    );
+    this.extractParams(
+      this.$route.query[maneuverTypesParam],
+      this.searchManeuverTypes,
+      decodeURIComponent
+    );
+  },
+
   updated() {
-    const nameParam = "n";
-    const levelsParam = "l";
-    const disciplinesParam = "d";
-    const requirementsParam = "r";
-    const maneuverTypesParam = "t";
     // TODO check whether this type definition can be parameterized
-    const query: {
-      n?: string;
-      l?: string[];
-      d?: string[];
-      r?: string[];
-      t?: string[];
-    } = {};
+    const query: Dictionary<string | string[]> = {};
     if (this.searchManeuverName) {
       query[nameParam] = encodeURIComponent(this.searchManeuverName);
     }
