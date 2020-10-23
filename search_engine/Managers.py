@@ -17,3 +17,23 @@ class ManeuverWithErrataManager(models.Manager):
             .get_queryset()
             .filter(has_errata_elsewhere=True)
         )
+
+
+class FullManeuverManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super(FullManeuverManager, self)
+            .get_queryset()
+            .select_related(
+                "discipline",
+                "maneuver_type",
+                "action",
+                "range",
+                "target",
+                "area",
+                "effect",
+                "duration",
+                "alternate_version",
+            )
+            .prefetch_related("descriptor")
+        )

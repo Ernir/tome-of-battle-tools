@@ -130,23 +130,14 @@ class ManeuverType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     all_maneuvers = graphene.List(ManeuverType)
+    maneuver = graphene.Field(ManeuverType, slug=graphene.String())
 
     def resolve_all_maneuvers(root, info):
-        return (
-            Maneuver.objects.select_related(
-                "discipline",
-                "maneuver_type",
-                "action",
-                "range",
-                "target",
-                "area",
-                "effect",
-                "duration",
-                "alternate_version",
-            )
-            .prefetch_related("descriptor")
-            .all()
-        )
+        return Maneuver.full_maneuvers.all()
+
+    def resolve_maneuver(root, info, slug):
+        print(info, slug)
+        return Maneuver.full_maneuvers.get(slug=slug)
 
 
 schema = graphene.Schema(query=Query)

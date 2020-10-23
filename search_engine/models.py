@@ -3,7 +3,11 @@ from django.db.models import Count
 from django.utils.text import slugify
 from markdown import markdown
 
-from search_engine.Managers import ManeuverWithErrataManager, UniqueManeuverManager
+from search_engine.Managers import (
+    ManeuverWithErrataManager,
+    UniqueManeuverManager,
+    FullManeuverManager,
+)
 
 
 class Discipline(models.Model):
@@ -220,6 +224,7 @@ class Maneuver(models.Model):
     objects = models.Manager()
     unique_objects = UniqueManeuverManager()
     maneuvers_with_errata = ManeuverWithErrataManager()
+    full_maneuvers = FullManeuverManager()
 
     class Meta:
         ordering = ("name",)
