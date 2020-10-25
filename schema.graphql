@@ -79,6 +79,7 @@ type ManeuverTypeType {
 
 type Query {
   allManeuvers: [ManeuverType]
+  singleManeuver(slug: String): ManeuverType
 }
 
 type RangeType {

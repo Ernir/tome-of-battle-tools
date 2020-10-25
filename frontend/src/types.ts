@@ -14,6 +14,11 @@ export type Scalars = {
 export type Query = {
   __typename?: "Query";
   allManeuvers?: Maybe<Array<Maybe<ManeuverType>>>;
+  singleManeuver?: Maybe<ManeuverType>;
+};
+
+export type QuerySingleManeuverArgs = {
+  slug?: Maybe<Scalars["String"]>;
 };
 
 /** The core entity of the search engine, the one actually being searched for. Ties together all other game concepts. */

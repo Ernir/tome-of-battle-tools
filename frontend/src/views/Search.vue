@@ -61,7 +61,9 @@
       </v-col>
       <v-col cols="12" sm="4">
         <v-card class="pa-2" outlined tile>
-          One of three columns
+          <div v-if="!$apollo.loading">
+            <ManeuverDetailedItem :maneuver="selectedManeuver" />
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -71,6 +73,7 @@
 <script lang="ts">
 import Vue from "vue";
 import gql from "graphql-tag";
+import ManeuverDetailedItem from "@/components/ManeuverDetailedItem.vue";
 import ManeuverListItem from "@/views/ManeuverListItem.vue";
 import { ManeuverType } from "@/types";
 import { Dictionary } from "vue-router/types/router";
@@ -82,7 +85,7 @@ const requirementsParam = "r";
 const maneuverTypesParam = "t";
 
 export default Vue.component("Search", {
-  components: { ManeuverListItem },
+  components: { ManeuverListItem, ManeuverDetailedItem },
 
   apollo: {
     allManeuvers: () => gql`
@@ -101,7 +104,35 @@ export default Vue.component("Search", {
           slug
         }
       }
-    `
+    `,
+    singleManeuver: {
+      query: gql`
+        query GetManeuver($slug: String!) {
+          singleManeuver(slug: $slug) {
+            id
+            name
+            page
+            discipline {
+              name
+            }
+            maneuverType {
+              name
+            }
+            level
+            requirements
+            slug
+          }
+        }
+      `,
+      variables() {
+        return {
+          slug: this.selectedManeuver.slug || ""
+        };
+      },
+      skip() {
+        return !this.selectedManeuver;
+      }
+    }
   },
 
   computed: {
@@ -119,6 +150,10 @@ export default Vue.component("Search", {
           (this.searchManeuverTypes.length === 0 ||
             this.searchManeuverTypes.includes(maneuver.maneuverType.name))
       );
+    },
+
+    selectedManeuver(): ManeuverType {
+      return this.maneuversFiltered[0];
     },
 
     levels(): number[] {
