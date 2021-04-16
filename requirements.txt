@@ -7,7 +7,7 @@ click==7.1.2
 dj-database-url==0.5.0
 Django==3.0.14
 django-crispy-forms==1.9.1
-django-debug-toolbar==2.2
+django-debug-toolbar==2.2.1
 django-graphiql-debug-toolbar==0.1.4
 django-heroku==0.3.1
 graphene==2.1.8
