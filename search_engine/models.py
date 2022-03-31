@@ -36,7 +36,7 @@ class ManeuverType(models.Model):
         type_names = [man_type.name for man_type in cls.objects.all()]
         type_overview = {}
         for type_name in type_names:
-            type_num = Maneuver.unique_objects.filter(type__name=type_name).count()
+            type_num = Maneuver.unique_objects.filter(maneuver_type__name=type_name).count()
             type_ratio = int(type_num / Maneuver.unique_objects.count() * 100)
             type_overview[type_name.lower()] = {"num": type_num, "percent": type_ratio}
 
