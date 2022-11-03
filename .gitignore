@@ -2,6 +2,7 @@
 
 db.sqlite3
 venv/
+venv310/
 staticfiles/
 *.dump
 .env
