@@ -68,6 +68,8 @@ ROOT_URLCONF = "TomeOfBattle.urls"
 
 WSGI_APPLICATION = "TomeOfBattle.wsgi.application"
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # Internationalization
 
 LANGUAGE_CODE = "en-us"
